@@ -13,9 +13,14 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
+        /* Custom style untuk kalender input date di mode dark */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
         /* Styling Khusus Mode Print / Cetak PDF */
         @media print {
-            /* Sembunyikan elemen yang tidak perlu dicetak */
             nav, button, #themePalette, .fixed, #searchInput, .no-print, th:last-child, td:last-child {
                 display: none !important;
             }
@@ -159,8 +164,8 @@
                     <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan</label>
-                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan 📅</label>
+                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs cursor-pointer">
                 </div>
                 <button type="submit" id="saveProfBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-lg transition mt-4">Simpan Profil Saya</button>
             </form>
@@ -229,8 +234,6 @@
                         </div>
                         <div class="flex items-center gap-3 w-full md:w-auto">
                             <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full md:w-64 px-4 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
-                            
-                            <!-- TOMBOL PRINT / CETAK PDF -->
                             <button onclick="printGuestData()" id="printBtn" class="px-4 py-2 rounded-xl text-white font-medium text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
                                 🖨️ Cetak / PDF
                             </button>
@@ -241,6 +244,7 @@
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="border-b border-stone-800 text-stone-400 font-medium">
+                                    <th class="py-3 px-3 text-center w-12">No.</th>
                                     <th class="py-3 px-4">Nama Tamu</th>
                                     <th class="py-3 px-4">Alamat</th>
                                     <th class="py-3 px-4">Nominal</th>
@@ -282,8 +286,8 @@
                             <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan</label>
-                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan 📅</label>
+                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs cursor-pointer">
                         </div>
                         <div class="flex gap-3 pt-2">
                             <button type="button" onclick="switchTab('input')" class="w-1/3 py-3 rounded-xl bg-stone-800 text-stone-300 font-medium text-xs hover:bg-stone-700 transition">Kembali</button>
@@ -493,7 +497,11 @@
 
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
+                    
+                    // SINKRONISASI FOTO DI NAV BAR DAN PREVIEW EDIT SECARA INSTAN
                     document.getElementById("navUserFoto").src = fotoUrl;
+                    document.getElementById("imgEditPreview").src = fotoUrl;
+                    
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
                 } else {
@@ -521,7 +529,8 @@
                     logout();
                 }
             } catch (err) {
-                logout();
+                // Pertahankan sesi login jika ada kendala jaringan saat merefresh
+                showDashboard();
             }
         }
 
@@ -617,16 +626,17 @@
             let total = 0;
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-500">Belum ada data tamu terdaftar.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-stone-500">Belum ada data tamu terdaftar.</td></tr>`;
                 document.getElementById("totalNominal").textContent = "Rp 0";
                 return;
             }
 
-            data.forEach(item => {
+            data.forEach((item, index) => {
                 total += Number(item.nominal || 0);
                 const tr = document.createElement("tr");
                 tr.className = "border-b border-stone-800/60 hover:bg-stone-800/30 transition";
                 tr.innerHTML = `
+                    <td class="py-3 px-3 text-center text-stone-400 font-medium">${index + 1}</td>
                     <td class="py-3 px-4 font-medium text-stone-200">${item.nama}</td>
                     <td class="py-3 px-4 text-stone-400">${item.alamat}</td>
                     <td class="py-3 px-4 font-semibold text-stone-200">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
@@ -649,7 +659,6 @@
             renderTable(filtered);
         }
 
-        // FUNGSI PRINT & SAVE PDF VIA CHROME
         function printGuestData() {
             window.print();
         }
