@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Guest & Gift Tracker - Dark Zennial</title>
-    <!-- Favicon & Thumbnail -->
-    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/s1opzr.png">
+    <!-- Favicon & Thumbnail Baru -->
+    <link rel="icon" type="image/png" href="https://files.catbox.moe/s1opzr.png">
     <meta property="og:image" content="https://files.catbox.moe/s1opzr.png">
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -142,12 +142,21 @@
                 <h3 class="text-lg font-bold mt-2 text-stone-100">Lengkapi Detail Profil Pengguna</h3>
                 <p class="text-xs text-stone-400 mt-1">Harap isi detail profil pernikahan Anda sebelum melanjutkan.</p>
             </div>
-            <form onsubmit="handleSaveProfile(event)" class="space-y-3 text-left">
+            <form onsubmit="handleSaveProfile(event)" class="space-y-4 text-left">
+                <!-- PILIH AVATAR ICON GOOGLE -->
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Foto Profil (Upload File / Gambar)</label>
-                    <input type="file" id="profFile" accept="image/*" onchange="previewImage(event)" class="w-full text-xs text-stone-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-800 file:text-stone-200 hover:file:bg-stone-700">
-                    <input type="hidden" id="profFotoUrl">
-                    <img id="imgPreview" class="w-20 h-20 rounded-full object-cover mx-auto mt-2 hidden border-2 border-stone-700 shadow">
+                    <label class="block text-xs font-medium text-stone-300 mb-2 text-center">Pilih Ikon Avatar Profil</label>
+                    <input type="hidden" id="profFotoUrl" value="💍">
+                    <div class="flex justify-center gap-2 flex-wrap" id="avatarPickerModal">
+                        <button type="button" onclick="selectAvatar('💍', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-amber-500 text-xl flex items-center justify-center">💍</button>
+                        <button type="button" onclick="selectAvatar('👰', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👰</button>
+                        <button type="button" onclick="selectAvatar('🤵', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🤵</button>
+                        <button type="button" onclick="selectAvatar('💖', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">💖</button>
+                        <button type="button" onclick="selectAvatar('🏰', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🏰</button>
+                        <button type="button" onclick="selectAvatar('👑', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
+                        <button type="button" onclick="selectAvatar('🌸', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🌸</button>
+                        <button type="button" onclick="selectAvatar('🥂', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🥂</button>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -178,7 +187,7 @@
         <nav class="bg-stone-900/80 backdrop-blur-md border-b border-stone-800 sticky top-0 z-40 no-print">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <img id="navUserFoto" src="https://via.placeholder.com/150" class="w-9 h-9 rounded-full object-cover border border-stone-700">
+                    <div id="navUserFoto" class="w-9 h-9 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-lg">💍</div>
                     <span class="font-bold text-sm text-stone-100" id="displayUsername">Rahman&Neyla</span>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -267,9 +276,20 @@
                     <p class="text-xs text-stone-400 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
                     
                     <form onsubmit="handleSaveProfile(event)" class="space-y-4">
-                        <div class="text-center mb-4">
-                            <img id="imgEditPreview" class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-stone-700 shadow mb-2">
-                            <input type="file" id="profFileEdit" accept="image/*" onchange="previewImageEdit(event)" class="w-full text-xs text-stone-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-800 file:text-stone-200 hover:file:bg-stone-700">
+                        <!-- PILIH AVATAR ICON EDIT -->
+                        <div>
+                            <label class="block text-xs font-medium text-stone-300 mb-2 text-center">Pilih Ikon Avatar Profil</label>
+                            <input type="hidden" id="profFotoUrlEdit" value="💍">
+                            <div class="flex justify-center gap-2 flex-wrap" id="avatarPickerEdit">
+                                <button type="button" onclick="selectAvatar('💍', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-amber-500 text-xl flex items-center justify-center">💍</button>
+                                <button type="button" onclick="selectAvatar('👰', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👰</button>
+                                <button type="button" onclick="selectAvatar('🤵', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🤵</button>
+                                <button type="button" onclick="selectAvatar('💖', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">💖</button>
+                                <button type="button" onclick="selectAvatar('🏰', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🏰</button>
+                                <button type="button" onclick="selectAvatar('👑', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
+                                <button type="button" onclick="selectAvatar('🌸', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🌸</button>
+                                <button type="button" onclick="selectAvatar('🥂', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🥂</button>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
@@ -372,6 +392,30 @@
             return regex.test(username) && !username.includes(" ");
         }
 
+        function selectAvatar(icon, mode) {
+            if (mode === 'modal') {
+                document.getElementById("profFotoUrl").value = icon;
+                document.querySelectorAll(".avatar-opt-modal").forEach(btn => {
+                    btn.classList.remove("border-amber-500");
+                    btn.classList.add("border-transparent");
+                    if (btn.textContent.trim() === icon) {
+                        btn.classList.add("border-amber-500");
+                        btn.classList.remove("border-transparent");
+                    }
+                });
+            } else {
+                document.getElementById("profFotoUrlEdit").value = icon;
+                document.querySelectorAll(".avatar-opt-edit").forEach(btn => {
+                    btn.classList.remove("border-amber-500");
+                    btn.classList.add("border-transparent");
+                    if (btn.textContent.trim() === icon) {
+                        btn.classList.add("border-amber-500");
+                        btn.classList.remove("border-transparent");
+                    }
+                });
+            }
+        }
+
         async function handleLogin() {
             const user = document.getElementById("loginUsername").value.trim();
             const pass = document.getElementById("loginPassword").value.trim();
@@ -444,36 +488,11 @@
             }
         }
 
-        function previewImage(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    document.getElementById("profFotoUrl").value = evt.target.result;
-                    const img = document.getElementById("imgPreview");
-                    img.src = evt.target.result;
-                    img.classList.remove("hidden");
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function previewImageEdit(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    document.getElementById("imgEditPreview").src = evt.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
         async function handleSaveProfile(e) {
             e.preventDefault();
             const isEditMode = !document.getElementById("profileModal").classList.contains("hidden") ? false : true;
 
-            const fotoUrl = isEditMode ? document.getElementById("imgEditPreview").src : (document.getElementById("profFotoUrl").value || "https://via.placeholder.com/150");
+            const fotoUrl = isEditMode ? document.getElementById("profFotoUrlEdit").value : document.getElementById("profFotoUrl").value;
             const namaSuami = isEditMode ? document.getElementById("profSuamiEdit").value : document.getElementById("profSuami").value;
             const namaIstri = isEditMode ? document.getElementById("profIstriEdit").value : document.getElementById("profIstri").value;
             const alamat = isEditMode ? document.getElementById("profAlamatEdit").value : document.getElementById("profAlamat").value;
@@ -498,10 +517,10 @@
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
                     
-                    // SINKRONISASI FOTO DI NAV BAR DAN PREVIEW EDIT SECARA INSTAN
-                    document.getElementById("navUserFoto").src = fotoUrl;
-                    document.getElementById("imgEditPreview").src = fotoUrl;
-                    
+                    // SINKRONISASI AVATAR ICON TERPILIH DI NAV BAR & EDIT SECTION
+                    document.getElementById("navUserFoto").textContent = fotoUrl;
+                    selectAvatar(fotoUrl, 'edit');
+
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
                 } else {
@@ -529,7 +548,6 @@
                     logout();
                 }
             } catch (err) {
-                // Pertahankan sesi login jika ada kendala jaringan saat merefresh
                 showDashboard();
             }
         }
@@ -548,14 +566,23 @@
                 const json = await res.json();
                 if (json.status === "success") {
                     const p = json.profile;
-                    if (p.fotoUrl) {
-                        document.getElementById("navUserFoto").src = p.fotoUrl;
-                        document.getElementById("imgEditPreview").src = p.fotoUrl;
-                    }
+                    
+                    // IKON AVATAR NAV & EDIT
+                    const activeIcon = p.fotoUrl || '💍';
+                    document.getElementById("navUserFoto").textContent = activeIcon;
+                    selectAvatar(activeIcon, 'edit');
+
+                    // LOAD PROFILE VALUES TERMASUK TANGGAL PERNIKAHAN
                     document.getElementById("profSuamiEdit").value = p.namaSuami || "";
                     document.getElementById("profIstriEdit").value = p.namaIstri || "";
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
-                    document.getElementById("profTanggalEdit").value = p.tanggalNikah || "";
+                    
+                    // MEMASTIKAN TANGGAL PERNIKAHAN TERPANGGIL OTOMATIS DAN TIDAK KOSONG
+                    if (p.tanggalNikah) {
+                        // Format Tanggal (YYYY-MM-DD)
+                        const formattedDate = new Date(p.tanggalNikah).toISOString().split('T')[0];
+                        document.getElementById("profTanggalEdit").value = formattedDate;
+                    }
                     
                     document.getElementById("printSubTitle").textContent = `Pasangan: ${p.namaSuami || ''} & ${p.namaIstri || ''} (${currentUser})`;
                 }
@@ -595,6 +622,7 @@
             } else if (tab === 'profil') {
                 divProf.classList.remove("hidden");
                 btnProf.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
+                loadUserProfileData(); // Otomatis muat data profil & tanggal nikah saat tab profil diklik
             }
         }
 
