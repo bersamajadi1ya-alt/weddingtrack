@@ -88,6 +88,19 @@
         </div>
     </div>
 
+    <!-- POP-UP KONFIRMASI HAPUS KUSTOM -->
+    <div id="deleteConfirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
+            <div class="text-3xl mb-2">⚠️</div>
+            <h3 class="text-lg font-bold text-stone-100">Konfirmasi Hapus</h3>
+            <p class="text-xs text-stone-400 mt-2 mb-5">Apakah Anda yakin ingin menghapus data tamu ini? Data di spreadsheet juga akan terhapus.</p>
+            <div class="flex gap-2">
+                <button onclick="closeDeleteModal()" class="w-1/2 py-2.5 rounded-xl bg-stone-800 text-stone-300 text-xs font-semibold hover:bg-stone-700 transition">Batal</button>
+                <button id="confirmDeleteBtn" class="w-1/2 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700 transition shadow">Hapus</button>
+            </div>
+        </div>
+    </div>
+
     <!-- HALAMAN LOGIN & DAFTAR -->
     <div id="authSection" class="min-h-screen flex items-center justify-center p-4 no-print">
         <div class="bg-stone-900/90 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-800">
@@ -330,6 +343,7 @@
         let currentUser = localStorage.getItem("wedding_user") || "";
         let currentTheme = localStorage.getItem("wedding_theme") || "sage";
         let guestDataList = [];
+        let pendingDeleteId = null; // Menyimpan ID data yang akan dihapus
 
         // Konfigurasi Tema Warna Zennial untuk Dark Mode
         const themes = {
@@ -686,7 +700,7 @@
                     <td class="py-3 px-4 text-xs text-stone-500 no-print">${item.waktu}</td>
                     <td class="py-3 px-4 text-center no-print flex justify-center gap-2">
                         <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
-                        <button onclick="deleteGuest('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-red-400 font-medium border border-red-900/50" title="Hapus">🗑️</button>
+                        <button onclick="promptDeleteGuest('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-red-400 font-medium border border-red-900/50" title="Hapus">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -703,9 +717,22 @@
             renderTable(filtered);
         }
 
-        // FUNGSI MENGHAPUS DATA TAMU & SINKRONISASI KE SPREADSHEET
-        async function deleteGuest(id) {
-            if (!confirm("Apakah Anda yakin ingin menghapus data tamu ini? Data di spreadsheet juga akan terhapus.")) return;
+        // FUNGSI POP-UP KUSTOM UNTUK HAPUS DATA
+        function promptDeleteGuest(id) {
+            pendingDeleteId = id;
+            document.getElementById("deleteConfirmModal").classList.remove("hidden");
+        }
+
+        function closeDeleteModal() {
+            pendingDeleteId = null;
+            document.getElementById("deleteConfirmModal").classList.add("hidden");
+        }
+
+        // Event listener untuk tombol konfirmasi hapus pada pop-up kustom
+        document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+            if (!pendingDeleteId) return;
+            const id = pendingDeleteId;
+            closeDeleteModal();
 
             try {
                 const res = await fetch(WEB_APP_URL, {
@@ -716,14 +743,14 @@
 
                 if (json.status === "success") {
                     showPopup("Data tamu berhasil dihapus!", "Berhasil", "🗑️");
-                    fetchGuestData(); // Refresh ulang tabel & database
+                    fetchGuestData();
                 } else {
                     showPopup(json.message, "Gagal", "❌");
                 }
             } catch (err) {
                 showPopup("Terjadi kesalahan koneksi saat menghapus data.", "Kesalahan", "❌");
             }
-        }
+        });
 
         function printGuestData() {
             window.print();
