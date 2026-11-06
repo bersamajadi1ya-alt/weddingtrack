@@ -78,7 +78,7 @@
         </button>
     </div>
 
-    <!-- GLOBAL POP-UP NOTIFIKASI (Untuk Login/Error Penting) -->
+    <!-- GLOBAL POP-UP NOTIFIKASI -->
     <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
             <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
@@ -392,7 +392,6 @@
             }
             notif.classList.remove("hidden");
             
-            // Hilangkan otomatis setelah 3 detik
             setTimeout(() => {
                 notif.classList.add("hidden");
             }, 3000);
@@ -611,7 +610,7 @@
             localStorage.removeItem("wedding_user");
             currentUser = "";
             document.getElementById("dashboardSection").classList.add("hidden");
-            document.getElementById("authSection").classList.remove("hidden");
+            document.getElementById("authSection").classList.add("hidden");
             toggleAuthMode('login');
         }
 
@@ -685,8 +684,9 @@
                     <td class="py-3 px-4 text-stone-400">${item.alamat}</td>
                     <td class="py-3 px-4 font-semibold text-stone-200">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
                     <td class="py-3 px-4 text-xs text-stone-500 no-print">${item.waktu}</td>
-                    <td class="py-3 px-4 text-center no-print">
-                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
+                    <td class="py-3 px-4 text-center no-print flex justify-center gap-2">
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
+                        <button onclick="deleteGuest('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-red-400 font-medium border border-red-900/50" title="Hapus">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -701,6 +701,28 @@
                 item.nama.toLowerCase().includes(query) || item.alamat.toLowerCase().includes(query)
             );
             renderTable(filtered);
+        }
+
+        // FUNGSI MENGHAPUS DATA TAMU & SINKRONISASI KE SPREADSHEET
+        async function deleteGuest(id) {
+            if (!confirm("Apakah Anda yakin ingin menghapus data tamu ini? Data di spreadsheet juga akan terhapus.")) return;
+
+            try {
+                const res = await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "deleteGuest", user: currentUser, guestId: id })
+                });
+                const json = await res.json();
+
+                if (json.status === "success") {
+                    showPopup("Data tamu berhasil dihapus!", "Berhasil", "🗑️");
+                    fetchGuestData(); // Refresh ulang tabel & database
+                } else {
+                    showPopup(json.message, "Gagal", "❌");
+                }
+            } catch (err) {
+                showPopup("Terjadi kesalahan koneksi saat menghapus data.", "Kesalahan", "❌");
+            }
         }
 
         function printGuestData() {
@@ -732,7 +754,6 @@
                 const json = await res.json();
 
                 if (json.status === "success") {
-                    // MENGGANTI POP-UP DENGAN NOTIFIKASI DI BAWAH TOMBOL SIMPAN
                     showInlineNotification(id ? "✅ Data tamu berhasil diperbarui!" : "✅ Data tamu berhasil disimpan!");
                     resetForm();
                 } else {
