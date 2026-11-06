@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Guest & Gift Tracker - Dark Zennial</title>
-    <!-- Favicon & Thumbnail Baru -->
+    <!-- Favicon & Thumbnail -->
     <link rel="icon" type="image/png" href="https://files.catbox.moe/s1opzr.png">
     <meta property="og:image" content="https://files.catbox.moe/s1opzr.png">
     
@@ -78,7 +78,7 @@
         </button>
     </div>
 
-    <!-- GLOBAL POP-UP NOTIFIKASI -->
+    <!-- GLOBAL POP-UP NOTIFIKASI (Untuk Login/Error Penting) -->
     <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
             <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
@@ -223,6 +223,11 @@
                         </div>
                         <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md">Simpan Data Tamu</button>
                     </form>
+
+                    <!-- NOTIFIKASI BERHASIL DI BAWAH TOMBOL SIMPAN -->
+                    <div id="inlineNotification" class="mt-4 p-3 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 text-xs text-center hidden transition-all duration-300">
+                        ✅ Data tamu berhasil disimpan!
+                    </div>
                 </div>
             </div>
 
@@ -377,6 +382,22 @@
             document.getElementById("popupAlert").classList.add("hidden");
         }
 
+        function showInlineNotification(message, isSuccess = true) {
+            const notif = document.getElementById("inlineNotification");
+            notif.textContent = message;
+            if (isSuccess) {
+                notif.className = "mt-4 p-3 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 text-xs text-center transition-all duration-300";
+            } else {
+                notif.className = "mt-4 p-3 rounded-xl bg-rose-900/40 border border-rose-500/30 text-rose-300 text-xs text-center transition-all duration-300";
+            }
+            notif.classList.remove("hidden");
+            
+            // Hilangkan otomatis setelah 3 detik
+            setTimeout(() => {
+                notif.classList.add("hidden");
+            }, 3000);
+        }
+
         function toggleAuthMode(mode) {
             if (mode === 'register') {
                 document.getElementById("loginBox").classList.add("hidden");
@@ -517,7 +538,6 @@
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
                     
-                    // SINKRONISASI AVATAR ICON TERPILIH DI NAV BAR & EDIT SECTION
                     document.getElementById("navUserFoto").textContent = fotoUrl;
                     selectAvatar(fotoUrl, 'edit');
 
@@ -567,19 +587,15 @@
                 if (json.status === "success") {
                     const p = json.profile;
                     
-                    // IKON AVATAR NAV & EDIT
                     const activeIcon = p.fotoUrl || '💍';
                     document.getElementById("navUserFoto").textContent = activeIcon;
                     selectAvatar(activeIcon, 'edit');
 
-                    // LOAD PROFILE VALUES TERMASUK TANGGAL PERNIKAHAN
                     document.getElementById("profSuamiEdit").value = p.namaSuami || "";
                     document.getElementById("profIstriEdit").value = p.namaIstri || "";
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
                     
-                    // MEMASTIKAN TANGGAL PERNIKAHAN TERPANGGIL OTOMATIS DAN TIDAK KOSONG
                     if (p.tanggalNikah) {
-                        // Format Tanggal (YYYY-MM-DD)
                         const formattedDate = new Date(p.tanggalNikah).toISOString().split('T')[0];
                         document.getElementById("profTanggalEdit").value = formattedDate;
                     }
@@ -622,7 +638,7 @@
             } else if (tab === 'profil') {
                 divProf.classList.remove("hidden");
                 btnProf.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
-                loadUserProfileData(); // Otomatis muat data profil & tanggal nikah saat tab profil diklik
+                loadUserProfileData();
             }
         }
 
@@ -716,13 +732,14 @@
                 const json = await res.json();
 
                 if (json.status === "success") {
-                    showPopup(id ? "Data tamu berhasil diperbarui!" : "Data tamu berhasil disimpan!", "Sukses", "✅");
+                    // MENGGANTI POP-UP DENGAN NOTIFIKASI DI BAWAH TOMBOL SIMPAN
+                    showInlineNotification(id ? "✅ Data tamu berhasil diperbarui!" : "✅ Data tamu berhasil disimpan!");
                     resetForm();
                 } else {
-                    showPopup(json.message, "Gagal", "❌");
+                    showInlineNotification("❌ " + json.message, false);
                 }
             } catch (err) {
-                showPopup("Gagal menyimpan data tamu.", "Kesalahan", "❌");
+                showInlineNotification("❌ Gagal menyimpan data tamu.", false);
             } finally {
                 btn.textContent = "Simpan Data Tamu";
             }
