@@ -3,198 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Guest & Gift Tracker - Zennial Theme</title>
+    <title>Wedding Guest & Gift Tracker - Zennial</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body id="bodyTheme" class="bg-stone-100 text-stone-800 min-h-screen transition-colors duration-300">
+<body id="mainBody" class="min-h-screen text-stone-800 transition-colors duration-500 bg-stone-100">
 
+    <!-- LINK API BACKEND INTEGRATED -->
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrCs0nurQWvnxqKhd8YX0N6eRYz35PHdiKPGEFBUIf0LBrGkk5zHW75KK_E8z01F4G/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrCs0nurQWvnxqKhd8YX0N6eRYz35PHdiKPGEFBUIf0LBrGkk5zHW75KK_E8z01F4G/exec";
     </script>
 
-    <!-- Modal Registrasi Ringkas -->
-    <div id="registerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-100">
-            <div class="text-center mb-4">
-                <span id="regThemeBadge" class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">Akun Baru</span>
-                <h3 class="text-xl font-bold mt-2">Buat Akun Wedding Tracker</h3>
-                <p class="text-xs text-stone-500 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh: <span class="font-semibold text-stone-700">Rahman&Neyla</span>).</p>
-            </div>
-            <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna (Username)</label>
-                    <input type="text" id="regUsername" required placeholder="Rahman&Neyla" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Password</label>
-                    <div class="relative">
-                        <input type="password" id="regPassword" required placeholder="Minimal 6 karakter" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 pr-10">
-                        <button type="button" onclick="togglePassword('regPassword', this)" class="absolute right-3 top-3 text-xs text-stone-400 hover:text-stone-600">👁️</button>
-                    </div>
-                </div>
-                <button type="submit" id="regSubmitBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-lg mt-2">Daftar Sekarang</button>
-                <button type="button" onclick="closeRegisterModal()" class="w-full py-2 rounded-xl text-stone-500 font-medium text-xs">Batal</button>
-            </form>
+    <!-- FLOATING ICON TEMA WARNA ZENNIAL -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <div id="themePalette" class="hidden mb-3 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-stone-200 flex flex-col gap-2">
+            <span class="text-[10px] font-bold text-center text-stone-400 uppercase tracking-wider">Tema Warna</span>
+            <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Sage Green"></button>
+            <button onclick="setTheme('terracotta')" class="w-8 h-8 rounded-full bg-amber-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Terracotta"></button>
+            <button onclick="setTheme('navy')" class="w-8 h-8 rounded-full bg-blue-900 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Navy Blue"></button>
+            <button onclick="setTheme('dusty')" class="w-8 h-8 rounded-full bg-rose-500 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Dusty Rose"></button>
+            <button onclick="setTheme('lavender')" class="w-8 h-8 rounded-full bg-purple-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Lavender"></button>
+            <button onclick="setTheme('mustard')" class="w-8 h-8 rounded-full bg-yellow-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Mustard"></button>
+            <button onclick="setTheme('teal')" class="w-8 h-8 rounded-full bg-teal-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Teal"></button>
+            <button onclick="setTheme('charcoal')" class="w-8 h-8 rounded-full bg-stone-800 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Charcoal"></button>
+        </div>
+        <button onclick="toggleThemePalette()" class="w-12 h-12 rounded-full bg-white text-stone-700 shadow-xl border border-stone-200 flex items-center justify-center hover:rotate-45 transition duration-300 text-xl">
+            🎨
+        </button>
+    </div>
+
+    <!-- GLOBAL POP-UP NOTIFIKASI -->
+    <div id="popupAlert" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-100">
+            <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
+            <h3 id="popupTitle" class="text-lg font-bold text-stone-800">Pemberitahuan</h3>
+            <p id="popupMessage" class="text-xs text-stone-500 mt-2 mb-5"></p>
+            <button onclick="closePopup()" id="popupBtn" class="w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition">Tutup</button>
         </div>
     </div>
 
-    <!-- Modal Pop-up Profil Wajib untuk User Baru -->
-    <div id="setupProfileModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto">
-            <div class="text-center mb-4">
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800">Langkah Pertama</span>
-                <h3 class="text-xl font-bold mt-2">Lengkapi Data Pernikahan</h3>
-                <p class="text-xs text-stone-500 mt-1">Silakan lengkapi detail data Anda di bawah ini.</p>
-            </div>
-            <form onsubmit="handleInitialProfile(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">1. Nama User</label>
-                    <input type="text" id="modalNamaUser" required placeholder="Rahman & Neyla" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
+    <!-- HALAMAN LOGIN & DAFTAR -->
+    <div id="authSection" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-100">
+            
+            <!-- FORM LOGIN -->
+            <div id="loginBox" class="space-y-4">
+                <div class="text-center">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-stone-100">💍</div>
+                    <h1 class="text-xl font-bold tracking-tight">Masuk Pengguna</h1>
+                    <p class="text-xs text-stone-500 mt-1">Kelola data tamu dan amplop pernikahan Anda.</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">2. Nama Pasangan Laki-Laki</label>
-                    <input type="text" id="modalPria" required placeholder="M. Nur Rahman" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">3. Nama Pasangan Perempuan</label>
-                    <input type="text" id="modalWanita" required placeholder="Neyla Chusniyah" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">4. Tanggal Pernikahan</label>
-                    <input type="date" id="modalTanggal" required class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">5. Alamat</label>
-                    <input type="text" id="modalAlamat" required placeholder="Banyuwangi" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2">
-                </div>
-                <button type="submit" id="modalProfileBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-lg mt-2">Simpan & Masuk Beranda</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Halaman Login -->
-    <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-xl border border-stone-100 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-emerald-50 text-emerald-700" id="loginLogoBg">💍</div>
-            <h1 class="text-2xl font-bold tracking-tight">Wedding Guest Tracker</h1>
-            <p class="text-sm text-stone-500 mt-1 mb-6">Privasi aman dengan login akun pribadi.</p>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
-                <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna (Contoh: Rahman&Neyla)</label>
-                    <input type="text" id="loginUsername" required placeholder="Rahman&Neyla" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm">
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna</label>
+                    <input type="text" id="loginUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-stone-600 mb-1">Password</label>
-                    <div class="relative">
-                        <input type="password" id="loginPassword" required placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm pr-10">
-                        <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-3 top-3.5 text-xs text-stone-400 hover:text-stone-600">👁️</button>
-                    </div>
+                    <input type="password" id="loginPassword" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                 </div>
-                <button type="submit" id="loginBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md bg-emerald-700 hover:bg-emerald-800">Masuk Beranda</button>
+                <button onclick="handleLogin()" id="loginBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Masuk ke Dashboard</button>
+                <div class="text-center pt-2">
+                    <button onclick="toggleAuthMode('register')" class="text-xs text-stone-500 hover:text-stone-800 underline">Belum punya akun? Daftar Akun Baru</button>
+                </div>
+            </div>
+
+            <!-- FORM DAFTAR AKUN BARU -->
+            <div id="registerBox" class="space-y-4 hidden">
+                <div class="text-center">
+                    <h1 class="text-xl font-bold tracking-tight">Buat Akun Baru</h1>
+                    <p class="text-xs text-stone-500 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh : Rahman&Neyla)</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna</label>
+                    <input type="text" id="regUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Password</label>
+                    <input type="password" id="regPassword" placeholder="Buat password aman..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                </div>
+                <button onclick="handleRegister()" id="regBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Daftar Akun</button>
                 
-                <div class="flex justify-between items-center text-xs pt-2">
-                    <button type="button" onclick="openRegisterModal()" class="text-emerald-700 font-semibold hover:underline">✨ Buat Akun Baru</button>
-                    <a href="javascript:void(0)" onclick="forgotPassword()" class="text-stone-400 hover:text-stone-600">Lupa Password?</a>
+                <!-- TOMBOL KEMBALI -->
+                <button onclick="toggleAuthMode('login')" class="w-full py-2.5 rounded-xl bg-stone-100 text-stone-600 font-medium text-xs hover:bg-stone-200 transition">← Kembali ke Halaman Masuk</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- POP-UP MANDATORI PROFIL (USER BARU) -->
+    <div id="profileModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-4">
+                <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800">Wajib Diisi</span>
+                <h3 class="text-lg font-bold mt-2">Lengkapi Detail Profil Pengguna</h3>
+                <p class="text-xs text-stone-500 mt-1">Harap isi detail profil pernikahan Anda sebelum melanjutkan.</p>
+            </div>
+            <form onsubmit="handleSaveProfile(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Foto Profil (Upload File / Gambar)</label>
+                    <input type="file" id="profFile" accept="image/*" onchange="previewImage(event)" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-700 hover:file:bg-stone-200">
+                    <input type="hidden" id="profFotoUrl">
+                    <img id="imgPreview" class="w-20 h-20 rounded-full object-cover mx-auto mt-2 hidden border-2 border-stone-200 shadow">
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-stone-600 mb-1">Nama Suami</label>
+                        <input type="text" id="profSuami" required placeholder="M. Nur Rahman" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-stone-600 mb-1">Nama Istri</label>
+                        <input type="text" id="profIstri" required placeholder="Neyla Chusniyah" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Alamat</label>
+                    <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Tanggal Pernikahan</label>
+                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                </div>
+                <button type="submit" id="saveProfBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-lg transition mt-4">Simpan Profil Saya</button>
             </form>
         </div>
     </div>
 
-    <!-- Halaman Beranda / Dashboard -->
-    <div id="dashboardSection" class="hidden">
-        <nav id="navbarBg" class="backdrop-blur-md border-b sticky top-0 z-40 transition-colors">
+    <!-- MAIN DASHBOARD (USER BERANDA) -->
+    <div id="dashboardSection" class="hidden min-h-screen">
+        <!-- Navbar -->
+        <nav class="bg-white/90 backdrop-blur-md border-b border-stone-200/50 sticky top-0 z-40">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <img id="navAvatar" src="" class="w-9 h-9 rounded-full object-cover border border-white shadow-sm hidden" alt="Foto">
-                    <span id="navLogoDot" class="w-3 h-3 rounded-full"></span>
-                    <div>
-                        <span class="font-bold text-sm block" id="displayUsername">Dashboard</span>
-                        <span class="text-[10px] text-stone-500 block" id="displaySubtitle">Pernikahan</span>
-                    </div>
+                    <img id="navUserFoto" src="https://via.placeholder.com/150" class="w-9 h-9 rounded-full object-cover border">
+                    <span class="font-bold text-sm" id="displayUsername">Rahman&Neyla</span>
                 </div>
-                
-                <div class="flex items-center space-x-2 md:space-x-3">
-                    <button onclick="switchTab('input')" id="tabInputBtn" class="px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition">Input Tamu</button>
-                    <button onclick="switchTab('data')" id="tabDataBtn" class="px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition">Data Tamu</button>
-                    <button onclick="switchTab('profile')" id="tabProfileBtn" class="px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition">Profil</button>
-                    
-                    <div class="relative">
-                        <button onclick="toggleThemeMenu()" class="p-2.5 rounded-xl bg-white shadow-sm border border-stone-200 text-stone-700 hover:bg-stone-50 transition" title="Ganti Tema">🎨</button>
-                        <div id="themeDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-stone-100 p-3 hidden z-50 space-y-1.5">
-                            <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider px-2 mb-1">Pilih Tema Zennial</p>
-                            <button onclick="setTheme('sage')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 hover:bg-emerald-100">🌿 Sage Green</button>
-                            <button onclick="setTheme('terracotta')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-800 hover:bg-amber-100">🧱 Terracotta</button>
-                            <button onclick="setTheme('navy')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-900 hover:bg-blue-100">🌊 Navy Blue</button>
-                            <button onclick="setTheme('dusty')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-800 hover:bg-rose-100">🌸 Dusty Rose</button>
-                            <button onclick="setTheme('lavender')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-800 hover:bg-purple-100">💜 Lavender</button>
-                            <button onclick="setTheme('mustard')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-yellow-50 text-yellow-800 hover:bg-yellow-100">✨ Mustard</button>
-                            <button onclick="setTheme('teal')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-teal-50 text-teal-800 hover:bg-teal-100">🦚 Teal</button>
-                            <button onclick="setTheme('charcoal')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-900 hover:bg-stone-200">🌑 Charcoal</button>
-                        </div>
-                    </div>
-
-                    <button onclick="logout()" class="p-2 text-stone-400 hover:text-stone-600 text-xs font-medium">Keluar</button>
+                <div class="flex items-center space-x-2">
+                    <button onclick="switchTab('input')" id="tabInputBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Input Tamu</button>
+                    <button onclick="switchTab('data')" id="tabDataBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Data Tamu</button>
+                    <button onclick="switchTab('profil')" id="tabProfBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Profil</button>
+                    <button onclick="logout()" class="p-1.5 text-stone-400 hover:text-red-500 text-xs font-medium ml-2" title="Keluar">Keluar</button>
                 </div>
             </div>
         </nav>
 
         <main class="max-w-5xl mx-auto px-4 py-8">
             
-            <!-- Modal Pop-up Notifikasi Sukses -->
-            <div id="popupModalAlert" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-                <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center space-y-4 border border-stone-100">
-                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto text-xl font-bold">✓</div>
-                    <h3 class="text-lg font-bold" id="popupAlertTitle">Berhasil!</h3>
-                    <p class="text-sm text-stone-600" id="popupAlertMsg">Data berhasil disimpan.</p>
-                    <button onclick="closePopupAlert()" class="w-full py-2.5 rounded-xl text-white font-medium text-sm transition shadow-md bg-emerald-700 hover:bg-emerald-800">OK</button>
-                </div>
-            </div>
-
-            <!-- TAB 1: INPUT DATA -->
+            <!-- TAB 1: INPUT TAMU -->
             <div id="tabInputContent" class="space-y-6">
-                <div id="cardInputBg" class="p-8 rounded-3xl shadow-sm border max-w-xl mx-auto transition-colors">
-                    <h2 class="text-xl font-bold mb-1">Form Input Tamu & Hadiah</h2>
-                    <p class="text-sm text-stone-500 mb-6">Catat kehadiran dan amplop/kado tamu undangan.</p>
+                <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-100 max-w-lg mx-auto">
+                    <h2 class="text-lg font-bold mb-1 text-stone-800">Form Input Data Tamu</h2>
+                    <p class="text-xs text-stone-400 mb-6">Masukkan data tamu undangan dan amplop/kado.</p>
                     
                     <form id="guestForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
                         <input type="hidden" id="editRowId" value="">
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Nama Tamu</label>
-                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white focus:outline-none focus:ring-2 text-sm">
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Nama Lengkap Tamu</label>
+                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat</label>
-                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white focus:outline-none focus:ring-2 text-sm">
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat / Asal Tamu</label>
+                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-stone-600 mb-1">Nominal (Rupiah)</label>
-                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white focus:outline-none focus:ring-2 text-sm">
+                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                         </div>
-                        <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md">Simpan Data Tamu</button>
+                        <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md">Simpan Data Tamu</button>
                     </form>
                 </div>
             </div>
 
-            <!-- TAB 2: DATA TAMU -->
+            <!-- TAB 2: DATA BASE TAMU -->
             <div id="tabDataContent" class="hidden space-y-6">
-                <div id="cardDataBg" class="p-6 rounded-3xl shadow-sm border transition-colors">
+                <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-stone-100">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                         <div>
-                            <h2 class="text-xl font-bold">Database Tamu & Hadiah</h2>
-                            <p class="text-sm text-stone-500">Total terkumpul: <span id="totalNominal" class="font-bold text-stone-800">Rp 0</span></p>
+                            <h2 class="text-lg font-bold">Database Tamu & Hadiah</h2>
+                            <p class="text-xs text-stone-400">Total Terkumpul: <span id="totalNominal" class="font-bold text-stone-800">Rp 0</span></p>
                         </div>
                         <div class="w-full md:w-72">
-                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white focus:outline-none focus:ring-2 text-sm">
+                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto bg-white rounded-2xl border border-stone-100 p-2">
-                        <table class="w-full text-left border-collapse text-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="border-b border-stone-100 text-stone-400 font-medium">
                                     <th class="py-3 px-4">Nama Tamu</th>
@@ -204,47 +200,44 @@
                                     <th class="py-3 px-4 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="guestTableBody"></tbody>
+                            <tbody id="guestTableBody">
+                                <!-- Data injected via JS -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: PROFIL PENGGUNA -->
-            <div id="tabProfileContent" class="hidden space-y-6">
-                <div id="cardProfileBg" class="p-8 rounded-3xl shadow-sm border max-w-xl mx-auto transition-colors">
-                    <h2 class="text-xl font-bold mb-1">Pengaturan Profil Pengguna</h2>
-                    <p class="text-sm text-stone-500 mb-6">Sesuaikan informasi dashboard pernikahan Anda.</p>
-
-                    <form onsubmit="handleUpdateProfile(event)" class="space-y-4">
+            <!-- TAB 3: EDIT PROFIL -->
+            <div id="tabProfContent" class="hidden space-y-6">
+                <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-100 max-w-lg mx-auto">
+                    <h2 class="text-lg font-bold mb-1 text-stone-800">Sunting Profil Pengguna</h2>
+                    <p class="text-xs text-stone-400 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
+                    
+                    <form onsubmit="handleSaveProfile(event)" class="space-y-4">
                         <div class="text-center mb-4">
-                            <img id="profilePreview" src="" class="w-24 h-24 rounded-full object-cover mx-auto border-4 border-white shadow-md mb-2 bg-stone-200" alt="Foto">
-                            <label class="block text-xs text-stone-500 cursor-pointer mt-1 font-semibold hover:underline">
-                                📁 Upload Foto Baru (Dari File)
-                                <input type="file" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
-                            </label>
+                            <img id="imgEditPreview" class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-stone-200 shadow mb-2">
+                            <input type="file" id="profFileEdit" accept="image/*" onchange="previewImageEdit(event)" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-700 hover:file:bg-stone-200">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-stone-600 mb-1">Nama Suami</label>
+                                <input type="text" id="profSuamiEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-stone-600 mb-1">Nama Istri</label>
+                                <input type="text" id="profIstriEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">1. Nama User</label>
-                            <input type="text" id="profileNamaUser" required class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2">
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat</label>
+                            <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">2. Nama Pasangan Laki-Laki</label>
-                            <input type="text" id="profilePria" required class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2">
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Tanggal Pernikahan</label>
+                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">3. Nama Pasangan Perempuan</label>
-                            <input type="text" id="profileWanita" required class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">4. Tanggal Pernikahan</label>
-                            <input type="date" id="profileTanggal" required class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">5. Alamat</label>
-                            <input type="text" id="profileAlamat" required class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm focus:outline-none focus:ring-2">
-                        </div>
-                        <button type="submit" id="profileSubmitBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md">Simpan Perubahan Profil</button>
+                        <button type="submit" id="saveProfEditBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Perbarui Profil</button>
                     </form>
                 </div>
             </div>
@@ -252,292 +245,299 @@
         </main>
     </div>
 
+    <!-- LOGIKA JAVASCRIPT APP -->
     <script>
         let currentUser = localStorage.getItem("wedding_user") || "";
         let currentTheme = localStorage.getItem("wedding_theme") || "sage";
-        let userProfile = JSON.parse(localStorage.getItem("wedding_profile") || "{}");
         let guestDataList = [];
-        let tempUploadedPhoto = "";
 
+        // Konfigurasi Warna Zennial (Mengubah warna dominan dan background secara keseluruhan)
         const themes = {
-            sage: { bg: "bg-emerald-50/60", card: "bg-white border-emerald-100", nav: "bg-emerald-50/80 border-emerald-100", primary: "bg-emerald-700", hover: "hover:bg-emerald-800", text: "text-emerald-700", light: "bg-emerald-100" },
-            terracotta: { bg: "bg-amber-50/60", card: "bg-white border-amber-100", nav: "bg-amber-50/80 border-amber-100", primary: "bg-amber-700", hover: "hover:bg-amber-800", text: "text-amber-700", light: "bg-amber-100" },
-            navy: { bg: "bg-blue-50/60", card: "bg-white border-blue-100", nav: "bg-blue-50/80 border-blue-100", primary: "bg-blue-900", hover: "hover:bg-blue-950", text: "text-blue-900", light: "bg-blue-100" },
-            dusty: { bg: "bg-rose-50/60", card: "bg-white border-rose-100", nav: "bg-rose-50/80 border-rose-100", primary: "bg-rose-500", hover: "hover:bg-rose-600", text: "text-rose-500", light: "bg-rose-100" },
-            lavender: { bg: "bg-purple-50/60", card: "bg-white border-purple-100", nav: "bg-purple-50/80 border-purple-100", primary: "bg-purple-600", hover: "hover:bg-purple-700", text: "text-purple-600", light: "bg-purple-100" },
-            mustard: { bg: "bg-yellow-50/60", card: "bg-white border-yellow-100", nav: "bg-yellow-50/80 border-yellow-100", primary: "bg-yellow-600", hover: "hover:bg-yellow-700", text: "text-yellow-600", light: "bg-yellow-100" },
-            teal: { bg: "bg-teal-50/60", card: "bg-white border-teal-100", nav: "bg-teal-50/80 border-teal-100", primary: "bg-teal-700", hover: "hover:bg-teal-800", text: "text-teal-700", light: "bg-teal-100" },
-            charcoal: { bg: "bg-stone-200/60", card: "bg-white border-stone-300", nav: "bg-stone-100/80 border-stone-200", primary: "bg-stone-800", hover: "hover:bg-stone-900", text: "text-stone-800", light: "bg-stone-200" }
+            sage: { bg: "bg-emerald-900/10", primary: "bg-emerald-700", hover: "hover:bg-emerald-800", text: "text-emerald-700" },
+            terracotta: { bg: "bg-amber-900/10", primary: "bg-amber-700", hover: "hover:bg-amber-800", text: "text-amber-700" },
+            navy: { bg: "bg-blue-950/10", primary: "bg-blue-900", hover: "hover:bg-blue-950", text: "text-blue-900" },
+            dusty: { bg: "bg-rose-900/10", primary: "bg-rose-500", hover: "hover:bg-rose-600", text: "text-rose-500" },
+            lavender: { bg: "bg-purple-900/10", primary: "bg-purple-600", hover: "hover:bg-purple-700", text: "text-purple-600" },
+            mustard: { bg: "bg-yellow-900/10", primary: "bg-yellow-600", hover: "hover:bg-yellow-700", text: "text-yellow-600" },
+            teal: { bg: "bg-teal-900/10", primary: "bg-teal-700", hover: "hover:bg-teal-800", text: "text-teal-700" },
+            charcoal: { bg: "bg-stone-900/10", primary: "bg-stone-800", hover: "hover:bg-stone-900", text: "text-stone-800" }
         };
 
         window.onload = function() {
-            applyTheme(currentTheme);
-            if (currentUser && userProfile.username) {
-                showDashboard();
+            setTheme(currentTheme);
+            if (currentUser) {
+                checkUserStatusAndLoad();
             }
         };
 
-        function applyTheme(themeName) {
-            currentTheme = themeName;
-            localStorage.setItem("wedding_theme", themeName);
-            const t = themes[themeName];
+        function toggleThemePalette() {
+            document.getElementById("themePalette").classList.toggle("hidden");
+        }
 
-            document.getElementById("bodyTheme").className = `${t.bg} text-stone-800 min-h-screen transition-colors duration-300`;
-            document.getElementById("navbarBg").className = `${t.nav} backdrop-blur-md border-b sticky top-0 z-40 transition-colors`;
+        function setTheme(tName) {
+            currentTheme = tName;
+            localStorage.setItem("wedding_theme", tName);
+            const t = themes[tName];
             
-            ["cardInputBg", "cardDataBg", "cardProfileBg"].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.className = `p-8 rounded-3xl shadow-sm border ${t.card} max-w-xl mx-auto transition-colors`;
-            });
-
-            ["loginBtn", "regSubmitBtn", "submitBtn", "profileSubmitBtn", "modalProfileBtn"].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.className = `w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md ${t.primary} ${t.hover}`;
-            });
-
-            if(document.getElementById("navLogoDot")) {
-                document.getElementById("navLogoDot").className = `w-3 h-3 rounded-full ${t.primary}`;
-            }
+            document.getElementById("mainBody").className = `min-h-screen text-stone-800 transition-colors duration-500 ${t.bg}`;
+            document.getElementById("loginBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
+            document.getElementById("regBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
+            document.getElementById("submitBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
+            document.getElementById("saveProfBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
+            document.getElementById("saveProfEditBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
+            document.getElementById("popupBtn").className = `w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition ${t.primary} ${t.hover}`;
+            
             updateTabUI();
         }
 
-        function setTheme(themeName) { applyTheme(themeName); toggleThemeMenu(); }
-        function toggleThemeMenu() { document.getElementById("themeDropdown").classList.toggle("hidden"); }
+        function showPopup(msg, title = "Pemberitahuan", icon = "ℹ️") {
+            document.getElementById("popupTitle").textContent = title;
+            document.getElementById("popupMessage").textContent = msg;
+            document.getElementById("popupIcon").textContent = icon;
+            document.getElementById("popupAlert").classList.remove("hidden");
+        }
 
-        function togglePassword(inputId, btn) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                btn.textContent = "🙈";
+        function closePopup() {
+            document.getElementById("popupAlert").classList.add("hidden");
+        }
+
+        function toggleAuthMode(mode) {
+            if (mode === 'register') {
+                document.getElementById("loginBox").classList.add("hidden");
+                document.getElementById("registerBox").classList.remove("hidden");
             } else {
-                input.type = "password";
-                btn.textContent = "👁️";
+                document.getElementById("registerBox").classList.add("hidden");
+                document.getElementById("loginBox").classList.remove("hidden");
             }
         }
 
-        // Login Handler
-        async function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById("loginUsername").value.trim();
-            const password = document.getElementById("loginPassword").value.trim();
-            const btn = document.getElementById("loginBtn");
-            btn.textContent = "Memeriksa...";
+        function validateUsernameFormat(username) {
+            // Tanpa spasi & huruf kapital diawal (Contoh: Rahman&Neyla)
+            const regex = /^[A-Z][a-zA-Z0-9&]*$/;
+            return regex.test(username) && !username.includes(" ");
+        }
 
+        async function handleLogin() {
+            const user = document.getElementById("loginUsername").value.trim();
+            const pass = document.getElementById("loginPassword").value.trim();
+
+            if (!user || !pass) {
+                showPopup("Harap isi Nama Pengguna dan Password!", "Peringatan", "⚠️");
+                return;
+            }
+
+            document.getElementById("loginBtn").textContent = "Memproses...";
             try {
                 const res = await fetch(WEB_APP_URL, {
                     method: "POST",
-                    body: JSON.stringify({ action: "loginUser", username: username, password: password })
+                    body: JSON.stringify({ action: "loginUser", username: user, password: pass })
                 });
                 const json = await res.json();
+                
                 if (json.status === "success") {
-                    currentUser = json.profile.username;
-                    userProfile = json.profile;
+                    currentUser = json.username;
                     localStorage.setItem("wedding_user", currentUser);
-                    localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
                     
-                    if (!userProfile.pria || !userProfile.wanita) {
-                        document.getElementById("loginSection").classList.add("hidden");
-                        document.getElementById("setupProfileModal").classList.remove("hidden");
-                        document.getElementById("modalNamaUser").value = userProfile.namaUser || currentUser;
+                    if (!json.isProfileComplete) {
+                        document.getElementById("profileModal").classList.remove("hidden");
                     } else {
                         showDashboard();
                     }
                 } else {
-                    alert(json.message || "Username atau password salah!");
+                    showPopup(json.message, "Gagal Masuk", "❌");
                 }
             } catch (err) {
-                alert("Koneksi gagal.");
+                showPopup("Terjadi kesalahan koneksi ke server.", "Kesalahan", "❌");
             } finally {
-                btn.textContent = "Masuk Beranda";
+                document.getElementById("loginBtn").textContent = "Masuk ke Dashboard";
             }
         }
 
-        function openRegisterModal() { document.getElementById("registerModal").classList.remove("hidden"); }
-        function closeRegisterModal() { document.getElementById("registerModal").classList.add("hidden"); }
+        async function handleRegister() {
+            const user = document.getElementById("regUsername").value.trim();
+            const pass = document.getElementById("regPassword").value.trim();
 
-        // Register Submit (Fix Ringkas)
-        async function handleRegisterSubmit(e) {
-            e.preventDefault();
-            const username = document.getElementById("regUsername").value.trim();
-            const password = document.getElementById("regPassword").value.trim();
-            
-            if (username.includes(" ") || username[0] !== username[0].toUpperCase()) {
-                alert("Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh: Rahman&Neyla)");
+            if (!validateUsernameFormat(user)) {
+                showPopup("Format username wajib tanpa spasi dan berawalan huruf kapital (Contoh : Rahman&Neyla)", "Format Salah", "⚠️");
+                return;
+            }
+            if (!pass) {
+                showPopup("Password wajib diisi!", "Peringatan", "⚠️");
                 return;
             }
 
-            const btn = document.getElementById("regSubmitBtn");
-            btn.textContent = "Mendaftarkan...";
-
+            document.getElementById("regBtn").textContent = "Mendaftarkan...";
             try {
                 const res = await fetch(WEB_APP_URL, {
                     method: "POST",
-                    body: JSON.stringify({ action: "registerUser", username: username, password: password })
+                    body: JSON.stringify({ action: "registerUser", username: user, password: pass })
                 });
                 const json = await res.json();
+
                 if (json.status === "success") {
-                    currentUser = username;
-                    userProfile = { username: username, namaUser: username, pria: "", wanita: "", tanggalNikah: "", alamat: "", foto: "" };
+                    currentUser = json.username;
                     localStorage.setItem("wedding_user", currentUser);
-                    localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
-                    
-                    closeRegisterModal();
-                    document.getElementById("loginSection").classList.add("hidden");
-                    document.getElementById("setupProfileModal").classList.remove("hidden");
-                    document.getElementById("modalNamaUser").value = username;
+                    document.getElementById("authSection").classList.add("hidden");
+                    // Tampilkan pop-up wajib profil untuk user baru
+                    document.getElementById("profileModal").classList.remove("hidden");
                 } else {
-                    alert(json.message);
+                    showPopup(json.message, "Gagal Mendaftar", "❌");
                 }
             } catch (err) {
-                alert("Registrasi gagal. Pastikan koneksi aman.");
+                showPopup("Terjadi kesalahan koneksi.", "Kesalahan", "❌");
             } finally {
-                btn.textContent = "Daftar Sekarang";
+                document.getElementById("regBtn").textContent = "Daftar Akun";
             }
         }
 
-        async function handleInitialProfile(e) {
-            e.preventDefault();
-            const profileData = {
-                username: currentUser,
-                namaUser: document.getElementById("modalNamaUser").value,
-                pria: document.getElementById("modalPria").value,
-                wanita: document.getElementById("modalWanita").value,
-                tanggalNikah: document.getElementById("modalTanggal").value,
-                alamat: document.getElementById("modalAlamat").value,
-                foto: userProfile.foto || ""
-            };
-
-            try {
-                await fetch(WEB_APP_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "updateProfile", user: currentUser, profile: profileData })
-                });
-                userProfile = profileData;
-                localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
-                document.getElementById("setupProfileModal").classList.add("hidden");
-                showDashboard();
-            } catch(err) {
-                alert("Gagal menyimpan profil.");
-            }
-        }
-
-        function forgotPassword() {
-            const username = document.getElementById("loginUsername").value.trim() || "NamaUser";
-            const email = "bersamajadi1ya@gmail.com";
-            const subject = encodeURIComponent("Lupa Password Wedding Tracker - " + username);
-            const body = encodeURIComponent(`Halo Call Center,\n\nSaya lupa password akun pernikahan saya.\n\nNama User: ${username}\nNomor yang dapat dihubungi: [Masukkan No HP Anda di sini]\n\nMohon bantuannya. Terima kasih.`);
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        }
-
-        function handleImageUpload(e) {
+        function previewImage(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(uploadEvent) {
-                    tempUploadedPhoto = uploadEvent.target.result;
-                    document.getElementById("profilePreview").src = tempUploadedPhoto;
+                reader.onload = function(evt) {
+                    document.getElementById("profFotoUrl").value = evt.target.result;
+                    const img = document.getElementById("imgPreview");
+                    img.src = evt.target.result;
+                    img.classList.remove("hidden");
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function showDashboard() {
-            document.getElementById("loginSection").classList.add("hidden");
-            document.getElementById("dashboardSection").classList.remove("hidden");
-            document.getElementById("displayUsername").textContent = userProfile.namaUser || currentUser;
-            document.getElementById("displaySubtitle").textContent = `Keluarga (${currentUser})`;
-            
-            if (userProfile.foto) {
-                const av = document.getElementById("navAvatar");
-                av.src = userProfile.foto;
-                av.classList.remove("hidden");
+        function previewImageEdit(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById("imgEditPreview").src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
             }
+        }
+
+        async function handleSaveProfile(e) {
+            e.preventDefault();
+            const isEditMode = !document.getElementById("profileModal").classList.contains("hidden") ? false : true;
+
+            const fotoUrl = isEditMode ? document.getElementById("imgEditPreview").src : (document.getElementById("profFotoUrl").value || "https://via.placeholder.com/150");
+            const namaSuami = isEditMode ? document.getElementById("profSuamiEdit").value : document.getElementById("profSuami").value;
+            const namaIstri = isEditMode ? document.getElementById("profIstriEdit").value : document.getElementById("profIstri").value;
+            const alamat = isEditMode ? document.getElementById("profAlamatEdit").value : document.getElementById("profAlamat").value;
+            const tanggalNikah = isEditMode ? document.getElementById("profTanggalEdit").value : document.getElementById("profTanggal").value;
+
+            const btn = isEditMode ? document.getElementById("saveProfEditBtn") : document.getElementById("saveProfBtn");
+            btn.textContent = "Menyimpan...";
+
+            const payload = {
+                action: "saveProfile",
+                user: currentUser,
+                profile: { namaSuami, namaIstri, alamat, tanggalNikah, fotoUrl }
+            };
+
+            try {
+                const res = await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+
+                if (json.status === "success") {
+                    document.getElementById("profileModal").classList.add("hidden");
+                    showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
+                    showDashboard();
+                } else {
+                    showPopup(json.message, "Gagal", "❌");
+                }
+            } catch (err) {
+                showPopup("Gagal menyimpan profil.", "Kesalahan", "❌");
+            } finally {
+                btn.textContent = isEditMode ? "Perbarui Profil" : "Simpan Profil Saya";
+            }
+        }
+
+        async function checkUserStatusAndLoad() {
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=getProfile&user=${encodeURIComponent(currentUser)}`);
+                const json = await res.json();
+                if (json.status === "success") {
+                    if (!json.profile.isProfileComplete) {
+                        document.getElementById("authSection").classList.add("hidden");
+                        document.getElementById("profileModal").classList.remove("hidden");
+                    } else {
+                        showDashboard();
+                    }
+                } else {
+                    logout();
+                }
+            } catch (err) {
+                logout();
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById("authSection").classList.add("hidden");
+            document.getElementById("dashboardSection").classList.remove("hidden");
+            document.getElementById("displayUsername").textContent = currentUser;
+            loadUserProfileData();
             switchTab('input');
+        }
+
+        async function loadUserProfileData() {
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=getProfile&user=${encodeURIComponent(currentUser)}`);
+                const json = await res.json();
+                if (json.status === "success") {
+                    const p = json.profile;
+                    if (p.fotoUrl) document.getElementById("navUserFoto").src = p.fotoUrl;
+                    document.getElementById("profSuamiEdit").value = p.namaSuami || "";
+                    document.getElementById("profIstriEdit").value = p.namaIstri || "";
+                    document.getElementById("profAlamatEdit").value = p.alamat || "";
+                    document.getElementById("profTanggalEdit").value = p.tanggalNikah || "";
+                    if (p.fotoUrl) document.getElementById("imgEditPreview").src = p.fotoUrl;
+                }
+            } catch (err) {
+                console.error("Gagal muat profil", err);
+            }
         }
 
         function logout() {
             localStorage.removeItem("wedding_user");
-            localStorage.removeItem("wedding_profile");
             currentUser = "";
-            userProfile = {};
             document.getElementById("dashboardSection").classList.add("hidden");
-            document.getElementById("loginSection").classList.remove("hidden");
+            document.getElementById("authSection").classList.remove("hidden");
+            toggleAuthMode('login');
         }
 
         function switchTab(tab) {
             const t = themes[currentTheme];
             const btnInput = document.getElementById("tabInputBtn");
             const btnData = document.getElementById("tabDataBtn");
-            const btnProfile = document.getElementById("tabProfileBtn");
+            const btnProf = document.getElementById("tabProfBtn");
             
             const divInput = document.getElementById("tabInputContent");
             const divData = document.getElementById("tabDataContent");
-            const divProfile = document.getElementById("tabProfileContent");
+            const divProf = document.getElementById("tabProfContent");
 
-            [btnInput, btnData, btnProfile].forEach(b => b.className = `px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition text-stone-600 hover:bg-stone-100`);
-            [divInput, divData, divProfile].forEach(d => d.classList.add("hidden"));
+            [divInput, divData, divProf].forEach(d => d.classList.add("hidden"));
+            [btnInput, btnData, btnProf].forEach(b => b.className = "px-3 py-1.5 rounded-xl text-xs font-medium transition text-stone-600 hover:bg-white/50");
 
             if (tab === 'input') {
                 divInput.classList.remove("hidden");
-                btnInput.className = `px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition text-white ${t.primary}`;
-                resetForm();
+                btnInput.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
             } else if (tab === 'data') {
                 divData.classList.remove("hidden");
-                btnData.className = `px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition text-white ${t.primary}`;
+                btnData.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
                 fetchGuestData();
-            } else if (tab === 'profile') {
-                divProfile.classList.remove("hidden");
-                btnProfile.className = `px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition text-white ${t.primary}`;
-                loadProfileForm();
+            } else if (tab === 'profil') {
+                divProf.classList.remove("hidden");
+                btnProf.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
             }
         }
 
         function updateTabUI() {
-            const activeTab = !document.getElementById("tabDataContent").classList.contains("hidden") ? 'data' : (!document.getElementById("tabProfileContent").classList.contains("hidden") ? 'profile' : 'input');
+            const activeTab = !document.getElementById("tabInputContent").classList.contains("hidden") ? 'input' : 
+                              (!document.getElementById("tabDataContent").classList.contains("hidden") ? 'data' : 'profil');
             switchTab(activeTab);
-        }
-
-        function loadProfileForm() {
-            document.getElementById("profileNamaUser").value = userProfile.namaUser || "";
-            document.getElementById("profilePria").value = userProfile.pria || "";
-            document.getElementById("profileWanita").value = userProfile.wanita || "";
-            document.getElementById("profileTanggal").value = userProfile.tanggalNikah || "";
-            document.getElementById("profileAlamat").value = userProfile.alamat || "";
-            tempUploadedPhoto = userProfile.foto || "";
-            if(tempUploadedPhoto) {
-                document.getElementById("profilePreview").src = tempUploadedPhoto;
-            }
-        }
-
-        async function handleUpdateProfile(e) {
-            e.preventDefault();
-            const profileData = {
-                username: currentUser,
-                namaUser: document.getElementById("profileNamaUser").value,
-                pria: document.getElementById("profilePria").value,
-                wanita: document.getElementById("profileWanita").value,
-                tanggalNikah: document.getElementById("profileTanggal").value,
-                alamat: document.getElementById("profileAlamat").value,
-                foto: tempUploadedPhoto
-            };
-
-            const btn = document.getElementById("profileSubmitBtn");
-            btn.textContent = "Menyimpan...";
-
-            try {
-                await fetch(WEB_APP_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "updateProfile", user: currentUser, profile: profileData })
-                });
-                userProfile = profileData;
-                localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
-                showPopupAlert("Berhasil!", "Profil berhasil diperbarui!");
-                showDashboard();
-            } catch (err) {
-                alert("Gagal memperbarui profil.");
-            } finally {
-                btn.textContent = "Simpan Perubahan Profil";
-            }
         }
 
         async function fetchGuestData() {
@@ -547,9 +547,12 @@
                 if (json.status === "success") {
                     guestDataList = json.data;
                     renderTable(guestDataList);
+                } else {
+                    showPopup(json.message, "Akses Terbatas", "🔒");
+                    logout();
                 }
             } catch (err) {
-                console.error("Gagal mengambil data tamu", err);
+                console.error("Gagal muat data", err);
             }
         }
 
@@ -559,7 +562,7 @@
             let total = 0;
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-400">Belum ada data tamu.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-400">Belum ada data tamu terdaftar.</td></tr>`;
                 document.getElementById("totalNominal").textContent = "Rp 0";
                 return;
             }
@@ -567,14 +570,14 @@
             data.forEach(item => {
                 total += Number(item.nominal || 0);
                 const tr = document.createElement("tr");
-                tr.className = "border-b border-stone-100 hover:bg-stone-50/50 transition";
+                tr.className = "border-b border-stone-50 hover:bg-stone-50/50 transition";
                 tr.innerHTML = `
                     <td class="py-3 px-4 font-medium">${item.nama}</td>
                     <td class="py-3 px-4 text-stone-600">${item.alamat}</td>
                     <td class="py-3 px-4 font-semibold text-stone-700">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
                     <td class="py-3 px-4 text-xs text-stone-400">${item.waktu}</td>
                     <td class="py-3 px-4 text-center">
-                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium">Sunting</button>
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium">Sunting</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -609,15 +612,21 @@
             };
 
             try {
-                await fetch(WEB_APP_URL, {
+                const res = await fetch(WEB_APP_URL, {
                     method: "POST",
                     body: JSON.stringify(payload)
                 });
-                
-                showPopupAlert("Berhasil!", id ? "Data tamu berhasil disunting!" : "Data tamu berhasil disimpan!");
-                resetForm();
+                const json = await res.json();
+
+                if (json.status === "success") {
+                    showPopup(id ? "Data tamu berhasil diperbarui!" : "Data tamu berhasil disimpan!", "Sukses", "✅");
+                    resetForm();
+                    // Tetap di menu input tamu (sesuai permintaan)
+                } else {
+                    showPopup(json.message, "Gagal", "❌");
+                }
             } catch (err) {
-                alert("Gagal menyimpan data.");
+                showPopup("Gagal menyimpan data tamu.", "Kesalahan", "❌");
             } finally {
                 btn.textContent = "Simpan Data Tamu";
             }
@@ -629,23 +638,13 @@
             document.getElementById("guestName").value = nama;
             document.getElementById("guestAddress").value = alamat;
             document.getElementById("guestAmount").value = nominal;
-            document.getElementById("submitBtn").textContent = "Perbarui Data";
+            document.getElementById("submitBtn").textContent = "Perbarui Data Tamu";
         }
 
         function resetForm() {
             document.getElementById("guestForm").reset();
             document.getElementById("editRowId").value = "";
             document.getElementById("submitBtn").textContent = "Simpan Data Tamu";
-        }
-
-        function showPopupAlert(title, msg) {
-            document.getElementById("popupAlertTitle").textContent = title;
-            document.getElementById("popupAlertMsg").textContent = msg;
-            document.getElementById("popupModalAlert").classList.remove("hidden");
-        }
-
-        function closePopupAlert() {
-            document.getElementById("popupModalAlert").classList.add("hidden");
         }
     </script>
 </body>
