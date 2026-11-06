@@ -145,7 +145,7 @@
 
         <main class="max-w-5xl mx-auto px-4 py-8">
             
-            <!-- Modal Pop-up Notifikasi Sukses (Ganti dari bar atas) -->
+            <!-- Modal Pop-up Notifikasi Sukses -->
             <div id="popupModalAlert" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
                 <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center space-y-4 border border-stone-100">
                     <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto text-xl font-bold">✓</div>
@@ -210,7 +210,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: PROFIL PENGGUNA (5 KOLOM BARU) -->
+            <!-- TAB 3: PROFIL PENGGUNA -->
             <div id="tabProfileContent" class="hidden space-y-6">
                 <div id="cardProfileBg" class="p-8 rounded-3xl shadow-sm border max-w-xl mx-auto transition-colors">
                     <h2 class="text-xl font-bold mb-1">Pengaturan Profil Pengguna</h2>
@@ -315,7 +315,7 @@
             }
         }
 
-        // Login Handler dengan toleransi kapital
+        // Login Handler
         async function handleLogin(e) {
             e.preventDefault();
             const username = document.getElementById("loginUsername").value.trim();
@@ -335,7 +335,6 @@
                     localStorage.setItem("wedding_user", currentUser);
                     localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
                     
-                    // Cek apakah user baru / belum lengkap profilnya (misal: nama user masih kosong atau sama persis username default)
                     if (!userProfile.pria || !userProfile.wanita) {
                         document.getElementById("loginSection").classList.add("hidden");
                         document.getElementById("setupProfileModal").classList.remove("hidden");
@@ -353,16 +352,15 @@
             }
         }
 
-        // Register Modal
         function openRegisterModal() { document.getElementById("registerModal").classList.remove("hidden"); }
         function closeRegisterModal() { document.getElementById("registerModal").classList.add("hidden"); }
 
+        // Register Submit (Fix Ringkas)
         async function handleRegisterSubmit(e) {
             e.preventDefault();
             const username = document.getElementById("regUsername").value.trim();
             const password = document.getElementById("regPassword").value.trim();
             
-            // Validasi format username baru (tanpa spasi dan berawalan huruf kapital)
             if (username.includes(" ") || username[0] !== username[0].toUpperCase()) {
                 alert("Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh: Rahman&Neyla)");
                 return;
@@ -384,7 +382,6 @@
                     localStorage.setItem("wedding_profile", JSON.stringify(userProfile));
                     
                     closeRegisterModal();
-                    // Munculkan pop-up wajib isi data khusus user baru
                     document.getElementById("loginSection").classList.add("hidden");
                     document.getElementById("setupProfileModal").classList.remove("hidden");
                     document.getElementById("modalNamaUser").value = username;
@@ -392,7 +389,7 @@
                     alert(json.message);
                 }
             } catch (err) {
-                alert("Registrasi gagal.");
+                alert("Registrasi gagal. Pastikan koneksi aman.");
             } finally {
                 btn.textContent = "Daftar Sekarang";
             }
@@ -424,7 +421,6 @@
             }
         }
 
-        // Lupa Password langsung buka Gmail
         function forgotPassword() {
             const username = document.getElementById("loginUsername").value.trim() || "NamaUser";
             const email = "bersamajadi1ya@gmail.com";
@@ -433,7 +429,6 @@
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
         }
 
-        // Upload Foto dari File Internal (Konversi ke Base64)
         function handleImageUpload(e) {
             const file = e.target.files[0];
             if (file) {
