@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Guest & Gift Tracker - Zennial Theme</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body id="bodyTheme" class="bg-stone-50 text-stone-800 min-h-screen transition-colors duration-300">
+
+    <!-- SETUP URL WEB APP DISINI -->
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrCs0nurQWvnxqKhd8YX0N6eRYz35PHdiKPGEFBUIf0LBrGkk5zHW75KK_E8z01F4G/exec"; 
+    </script>
+
+    <!-- Modal Popup First Time User -->
+    <div id="firstTimeModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-stone-100">
+            <div class="text-center mb-4">
+                <span id="modalThemeBadge" class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">Selamat Datang!</span>
+                <h3 id="modalTitle" class="text-xl font-bold mt-2">Pendaftaran Nama Baru</h3>
+                <p class="text-sm text-stone-500 mt-1">Sistem akan otomatis membuat lembar database khusus untuk nama yang Anda masukkan.</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pasangan / Pengguna (Contoh: Erza & Karin)</label>
+                    <input type="text" id="newUserNameInput" placeholder="Masukkan nama Anda..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-400 text-sm">
+                </div>
+                <button onclick="submitNewUser()" id="modalBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-lg">Mulai Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Login / Pilih User -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-xl border border-stone-100 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-2xl shadow-inner" id="loginLogoBg">💍</div>
+            <h1 class="text-2xl font-bold tracking-tight">Wedding Guest Tracker</h1>
+            <p class="text-sm text-stone-500 mt-1 mb-6">Kelola daftar tamu dan amplop pernikahan dengan mudah.</p>
+
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-medium text-stone-600 mb-1">Pilih Nama yang Sudah Terdaftar</label>
+                    <select id="userDropdown" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-400 text-sm bg-white">
+                        <option value="">-- Pilih Nama Anda --</option>
+                    </select>
+                </div>
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-stone-200"></div>
+                    <span class="flex-shrink mx-4 text-xs text-stone-400 uppercase tracking-wider">Atau</span>
+                    <div class="flex-grow border-t border-stone-200"></div>
+                </div>
+                <button onclick="openFirstTimeModal()" id="loginNewBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md">✨ Input Nama Baru / Pertama Kali</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Beranda / Dashboard (Hidden by default) -->
+    <div id="dashboardSection" class="hidden">
+        <!-- Navbar -->
+        <nav class="bg-white/80 backdrop-blur-md border-b border-stone-100 sticky top-0 z-40">
+            <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span id="navLogoDot" class="w-3 h-3 rounded-full"></span>
+                    <span class="font-bold text-lg" id="displayUsername">Beranda</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchTab('input')" id="tabInputBtn" class="px-4 py-2 rounded-xl text-sm font-medium transition">Input Tamu</button>
+                    <button onclick="switchTab('data')" id="tabDataBtn" class="px-4 py-2 rounded-xl text-sm font-medium transition">Data Tamu</button>
+                    <button onclick="logout()" class="p-2 text-stone-400 hover:text-stone-600 text-sm font-medium">Keluar</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Container -->
+        <main class="max-w-5xl mx-auto px-4 py-8">
+            
+            <!-- THEME SELECTOR ZENNIAL -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-stone-100 mb-8">
+                <h3 class="text-sm font-bold text-stone-700 mb-3">🎨 Pilih Tema Warna Zennial</h3>
+                <div class="flex flex-wrap gap-3" id="themeSelectorContainer">
+                    <button onclick="setTheme('sage')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-700 text-white shadow-sm">Sage Green</button>
+                    <button onclick="setTheme('terracotta')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-700 text-white shadow-sm">Terracotta</button>
+                    <button onclick="setTheme('navy')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-900 text-white shadow-sm">Navy Blue</button>
+                    <button onclick="setTheme('dusty')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-400 text-white shadow-sm">Dusty Rose</button>
+                    <button onclick="setTheme('lavender')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 text-white shadow-sm">Lavender</button>
+                    <button onclick="setTheme('mustard')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-yellow-600 text-white shadow-sm">Mustard</button>
+                    <button onclick="setTheme('teal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-teal-700 text-white shadow-sm">Teal</button>
+                    <button onclick="setTheme('charcoal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-stone-800 text-white shadow-sm">Charcoal</button>
+                </div>
+            </div>
+
+            <!-- TAB 1: INPUT DATA -->
+            <div id="tabInputContent" class="space-y-6">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 max-w-xl mx-auto">
+                    <h2 class="text-xl font-bold mb-1">Form Input Tamu & Hadiah</h2>
+                    <p class="text-sm text-stone-500 mb-6">Masukkan data kehadiran tamu undangan secara mandiri.</p>
+                    
+                    <form id="guestForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <input type="hidden" id="editRowId" value="">
+                        <div>
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Nama Lengkap Tamu</label>
+                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat / Asal</label>
+                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-stone-600 mb-1">Nominal (Rupiah)</label>
+                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm">
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md">Simpan Data Tamu</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: DATA TAMU (DATABASE & SEARCH) -->
+            <div id="tabDataContent" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-stone-100">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold">Database Tamu & Hadiah</h2>
+                            <p class="text-sm text-stone-500">Total terkumpul: <span id="totalNominal" class="font-bold text-stone-800">Rp 0</span></p>
+                        </div>
+                        <div class="w-full md:w-72">
+                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-sm">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-stone-100 text-stone-400 font-medium">
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Alamat</th>
+                                    <th class="py-3 px-4">Nominal</th>
+                                    <th class="py-3 px-4">Waktu</th>
+                                    <th class="py-3 px-4 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guestTableBody">
+                                <!-- Data injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        let currentUser = localStorage.getItem("wedding_user") || "";
+        let currentTheme = localStorage.getItem("wedding_theme") || "sage";
+        let guestDataList = [];
+
+        // Tema Zennial Color Mapping
+        const themes = {
+            sage: { primary: "bg-emerald-700", hover: "hover:bg-emerald-800", ring: "focus:ring-emerald-700", text: "text-emerald-700", light: "bg-emerald-50", hex: "#047857" },
+            terracotta: { primary: "bg-amber-700", hover: "hover:bg-amber-800", ring: "focus:ring-amber-700", text: "text-amber-700", light: "bg-amber-50", hex: "#b45309" },
+            navy: { primary: "bg-blue-900", hover: "hover:bg-blue-950", ring: "focus:ring-blue-900", text: "text-blue-900", light: "bg-blue-50", hex: "#1e3a8a" },
+            dusty: { primary: "bg-rose-500", hover: "hover:bg-rose-600", ring: "focus:ring-rose-500", text: "text-rose-500", light: "bg-rose-50", hex: "#f43f5e" },
+            lavender: { primary: "bg-purple-600", hover: "hover:bg-purple-700", ring: "focus:ring-purple-600", text: "text-purple-600", light: "bg-purple-50", hex: "#9333ea" },
+            mustard: { primary: "bg-yellow-600", hover: "hover:bg-yellow-700", ring: "focus:ring-yellow-600", text: "text-yellow-600", light: "bg-yellow-50", hex: "#ca8a04" },
+            teal: { primary: "bg-teal-700", hover: "hover:bg-teal-800", ring: "focus:ring-teal-700", text: "text-teal-700", light: "bg-teal-50", hex: "#0f766e" },
+            charcoal: { primary: "bg-stone-800", hover: "hover:bg-stone-900", ring: "focus:ring-stone-800", text: "text-stone-800", light: "bg-stone-100", hex: "#292524" }
+        };
+
+        window.onload = function() {
+            applyTheme(currentTheme);
+            loadUsersDropdown();
+            if (currentUser) {
+                showDashboard();
+            }
+            
+            // Event listener untuk dropdown
+            document.getElementById("userDropdown").addEventListener("change", function(e) {
+                if (e.target.value) {
+                    currentUser = e.target.value;
+                    localStorage.setItem("wedding_user", currentUser);
+                    showDashboard();
+                }
+            });
+        };
+
+        function applyTheme(themeName) {
+            currentTheme = themeName;
+            localStorage.setItem("wedding_theme", themeName);
+            const t = themes[themeName];
+
+            // Terapkan warna dinamis pada tombol & elemen utama
+            document.getElementById("loginLogoBg").className = `w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-2xl shadow-inner ${t.light} ${t.text}`;
+            document.getElementById("loginNewBtn").className = `w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md ${t.primary} ${t.hover}`;
+            document.getElementById("modalBtn").className = `w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-lg ${t.primary} ${t.hover}`;
+            document.getElementById("submitBtn").className = `w-full py-3 rounded-xl text-white font-medium text-sm transition shadow-md ${t.primary} ${t.hover}`;
+            document.getElementById("navLogoDot").className = `w-3 h-3 rounded-full ${t.primary}`;
+            document.getElementById("modalThemeBadge").className = `px-3 py-1 text-xs font-semibold rounded-full ${t.light} ${t.text}`;
+            
+            // Tab active styling update
+            updateTabUI();
+        }
+
+        function setTheme(themeName) {
+            applyTheme(themeName);
+        }
+
+        async function loadUsersDropdown() {
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=getUsers`);
+                const json = await res.json();
+                if (json.status === "success") {
+                    const dropdown = document.getElementById("userDropdown");
+                    dropdown.innerHTML = `<option value="">-- Pilih Nama Anda --</option>`;
+                    json.users.forEach(u => {
+                        const opt = document.createElement("option");
+                        opt.value = u;
+                        opt.textContent = u;
+                        dropdown.appendChild(opt);
+                    });
+                }
+            } catch (err) {
+                console.error("Gagal memuat user:", err);
+            }
+        }
+
+        function openFirstTimeModal() {
+            document.getElementById("firstTimeModal").classList.remove("hidden");
+        }
+
+        async function submitNewUser() {
+            const username = document.getElementById("newUserNameInput").value.trim();
+            if (!username) {
+                alert("Masukkan nama terlebih dahulu!");
+                return;
+            }
+            
+            document.getElementById("modalBtn").textContent = "Memproses...";
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "registerUser", username: username })
+                });
+                currentUser = username;
+                localStorage.setItem("wedding_user", currentUser);
+                document.getElementById("firstTimeModal").classList.add("hidden");
+                showDashboard();
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi.");
+            } finally {
+                document.getElementById("modalBtn").textContent = "Mulai Masuk";
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("dashboardSection").classList.remove("hidden");
+            document.getElementById("displayUsername").textContent = `Dashboard: ${currentUser}`;
+            switchTab('input');
+        }
+
+        function logout() {
+            localStorage.removeItem("wedding_user");
+            currentUser = "";
+            document.getElementById("dashboardSection").classList.add("hidden");
+            document.getElementById("loginSection").classList.remove("hidden");
+            loadUsersDropdown();
+        }
+
+        function switchTab(tab) {
+            const t = themes[currentTheme];
+            const btnInput = document.getElementById("tabInputBtn");
+            const btnData = document.getElementById("tabDataBtn");
+            const divInput = document.getElementById("tabInputContent");
+            const divData = document.getElementById("tabDataContent");
+
+            if (tab === 'input') {
+                divInput.classList.remove("hidden");
+                divData.classList.add("hidden");
+                btnInput.className = `px-4 py-2 rounded-xl text-sm font-medium transition text-white ${t.primary}`;
+                btnData.className = `px-4 py-2 rounded-xl text-sm font-medium transition text-stone-600 hover:bg-stone-100`;
+                resetForm();
+            } else {
+                divInput.classList.add("hidden");
+                divData.classList.remove("hidden");
+                btnData.className = `px-4 py-2 rounded-xl text-sm font-medium transition text-white ${t.primary}`;
+                btnInput.className = `px-4 py-2 rounded-xl text-sm font-medium transition text-stone-600 hover:bg-stone-100`;
+                fetchGuestData();
+            }
+        }
+
+        function updateTabUI() {
+            const activeTab = document.getElementById("tabInputContent").classList.contains("hidden") ? 'data' : 'input';
+            switchTab(activeTab);
+        }
+
+        async function fetchGuestData() {
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=getData&user=${encodeURIComponent(currentUser)}`);
+                const json = await res.json();
+                if (json.status === "success") {
+                    guestDataList = json.data;
+                    renderTable(guestDataList);
+                }
+            } catch (err) {
+                console.error("Gagal mengambil data tamu", err);
+            }
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById("guestTableBody");
+            tbody.innerHTML = "";
+            let total = 0;
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-400">Belum ada data tamu.</td></tr>`;
+                document.getElementById("totalNominal").textContent = "Rp 0";
+                return;
+            }
+
+            data.forEach(item => {
+                total += Number(item.nominal || 0);
+                const tr = document.createElement("tr");
+                tr.className = "border-b border-stone-50 hover:bg-stone-50/50 transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-medium">${item.nama}</td>
+                    <td class="py-3 px-4 text-stone-600">${item.alamat}</td>
+                    <td class="py-3 px-4 font-semibold text-stone-700">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-4 text-xs text-stone-400">${item.waktu}</td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium">Sunting</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById("totalNominal").textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function filterData() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = guestDataList.filter(item => 
+                item.nama.toLowerCase().includes(query) || item.alamat.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById("editRowId").value;
+            const nama = document.getElementById("guestName").value;
+            const alamat = document.getElementById("guestAddress").value;
+            const nominal = document.getElementById("guestAmount").value;
+
+            const btn = document.getElementById("submitBtn");
+            btn.textContent = "Menyimpan...";
+
+            const action = id ? "updateGuest" : "addGuest";
+            const payload = {
+                action: action,
+                user: currentUser,
+                guest: { id: id, nama: nama, alamat: alamat, nominal: nominal }
+            };
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                alert(id ? "Data berhasil disunting!" : "Data tamu berhasil disimpan!");
+                resetForm();
+                switchTab('data');
+            } catch (err) {
+                alert("Gagal menyimpan data.");
+            } finally {
+                btn.textContent = "Simpan Data Tamu";
+            }
+        }
+
+        function editGuest(id, nama, alamat, nominal) {
+            switchTab('input');
+            document.getElementById("editRowId").value = id;
+            document.getElementById("guestName").value = nama;
+            document.getElementById("guestAddress").value = alamat;
+            document.getElementById("guestAmount").value = nominal;
+            document.getElementById("submitBtn").textContent = "Perbarui Data";
+        }
+
+        function resetForm() {
+            document.getElementById("guestForm").reset();
+            document.getElementById("editRowId").value = "";
+            document.getElementById("submitBtn").textContent = "Simpan Data Tamu";
+        }
+    </script>
+</body>
+</html>
