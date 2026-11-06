@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Guest & Gift Tracker - Zennial</title>
+    <title>Wedding Guest & Gift Tracker - Dark Zennial</title>
+    <!-- Favicon & Thumbnail -->
+    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/qr5728.jpg">
+    <meta property="og:image" content="https://files.catbox.moe/qr5728.jpg">
+    
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body id="mainBody" class="min-h-screen text-stone-800 transition-colors duration-500 bg-stone-100">
+<body id="mainBody" class="min-h-screen text-stone-100 transition-colors duration-500 bg-stone-950">
 
     <!-- LINK API BACKEND INTEGRATED -->
     <script>
@@ -19,112 +23,110 @@
 
     <!-- FLOATING ICON TEMA WARNA ZENNIAL -->
     <div class="fixed bottom-6 right-6 z-50">
-        <div id="themePalette" class="hidden mb-3 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-stone-200 flex flex-col gap-2">
+        <div id="themePalette" class="hidden mb-3 bg-stone-900/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-stone-800 flex flex-col gap-2">
             <span class="text-[10px] font-bold text-center text-stone-400 uppercase tracking-wider">Tema Warna</span>
-            <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Sage Green"></button>
-            <button onclick="setTheme('terracotta')" class="w-8 h-8 rounded-full bg-amber-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Terracotta"></button>
-            <button onclick="setTheme('navy')" class="w-8 h-8 rounded-full bg-blue-900 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Navy Blue"></button>
-            <button onclick="setTheme('dusty')" class="w-8 h-8 rounded-full bg-rose-500 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Dusty Rose"></button>
-            <button onclick="setTheme('lavender')" class="w-8 h-8 rounded-full bg-purple-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Lavender"></button>
-            <button onclick="setTheme('mustard')" class="w-8 h-8 rounded-full bg-yellow-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Mustard"></button>
-            <button onclick="setTheme('teal')" class="w-8 h-8 rounded-full bg-teal-700 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Teal"></button>
-            <button onclick="setTheme('charcoal')" class="w-8 h-8 rounded-full bg-stone-800 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Charcoal"></button>
+            <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Sage Green"></button>
+            <button onclick="setTheme('terracotta')" class="w-8 h-8 rounded-full bg-amber-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Terracotta"></button>
+            <button onclick="setTheme('navy')" class="w-8 h-8 rounded-full bg-blue-700 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Navy Blue"></button>
+            <button onclick="setTheme('dusty')" class="w-8 h-8 rounded-full bg-rose-500 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Dusty Rose"></button>
+            <button onclick="setTheme('lavender')" class="w-8 h-8 rounded-full bg-purple-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Lavender"></button>
+            <button onclick="setTheme('mustard')" class="w-8 h-8 rounded-full bg-yellow-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Mustard"></button>
+            <button onclick="setTheme('teal')" class="w-8 h-8 rounded-full bg-teal-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Teal"></button>
+            <button onclick="setTheme('charcoal')" class="w-8 h-8 rounded-full bg-stone-700 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Charcoal"></button>
         </div>
-        <button onclick="toggleThemePalette()" class="w-12 h-12 rounded-full bg-white text-stone-700 shadow-xl border border-stone-200 flex items-center justify-center hover:rotate-45 transition duration-300 text-xl">
+        <button onclick="toggleThemePalette()" class="w-12 h-12 rounded-full bg-stone-900 text-stone-200 shadow-xl border border-stone-800 flex items-center justify-center hover:rotate-45 transition duration-300 text-xl">
             🎨
         </button>
     </div>
 
     <!-- GLOBAL POP-UP NOTIFIKASI -->
-    <div id="popupAlert" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-100">
+    <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
             <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
-            <h3 id="popupTitle" class="text-lg font-bold text-stone-800">Pemberitahuan</h3>
-            <p id="popupMessage" class="text-xs text-stone-500 mt-2 mb-5"></p>
+            <h3 id="popupTitle" class="text-lg font-bold text-stone-100">Pemberitahuan</h3>
+            <p id="popupMessage" class="text-xs text-stone-400 mt-2 mb-5"></p>
             <button onclick="closePopup()" id="popupBtn" class="w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition">Tutup</button>
         </div>
     </div>
 
     <!-- HALAMAN LOGIN & DAFTAR -->
     <div id="authSection" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white/95 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-100">
+        <div class="bg-stone-900/90 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-800">
             
             <!-- FORM LOGIN -->
             <div id="loginBox" class="space-y-4">
                 <div class="text-center">
-                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-stone-100">💍</div>
-                    <h1 class="text-xl font-bold tracking-tight">Masuk Pengguna</h1>
-                    <p class="text-xs text-stone-500 mt-1">Kelola data tamu dan amplop pernikahan Anda.</p>
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-stone-800 text-stone-200">💍</div>
+                    <h1 class="text-xl font-bold tracking-tight text-stone-100">Masuk Pengguna</h1>
+                    <p class="text-xs text-stone-400 mt-1">Kelola data tamu dan amplop pernikahan Anda.</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna</label>
-                    <input type="text" id="loginUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Nama Pengguna</label>
+                    <input type="text" id="loginUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                 </div>
                 <button onclick="handleLogin()" id="loginBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Masuk ke Dashboard</button>
                 <div class="text-center pt-2">
-                    <button onclick="toggleAuthMode('register')" class="text-xs text-stone-500 hover:text-stone-800 underline">Belum punya akun? Daftar Akun Baru</button>
+                    <button onclick="toggleAuthMode('register')" class="text-xs text-stone-400 hover:text-stone-200 underline">Belum punya akun? Daftar Akun Baru</button>
                 </div>
             </div>
 
             <!-- FORM DAFTAR AKUN BARU -->
             <div id="registerBox" class="space-y-4 hidden">
                 <div class="text-center">
-                    <h1 class="text-xl font-bold tracking-tight">Buat Akun Baru</h1>
-                    <p class="text-xs text-stone-500 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh : Rahman&Neyla)</p>
+                    <h1 class="text-xl font-bold tracking-tight text-stone-100">Buat Akun Baru</h1>
+                    <p class="text-xs text-stone-400 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh : Rahman&Neyla)</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Nama Pengguna</label>
-                    <input type="text" id="regUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Nama Pengguna</label>
+                    <input type="text" id="regUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Password</label>
-                    <input type="password" id="regPassword" placeholder="Buat password aman..." class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Password</label>
+                    <input type="password" id="regPassword" placeholder="Buat password aman..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                 </div>
                 <button onclick="handleRegister()" id="regBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Daftar Akun</button>
-                
-                <!-- TOMBOL KEMBALI -->
-                <button onclick="toggleAuthMode('login')" class="w-full py-2.5 rounded-xl bg-stone-100 text-stone-600 font-medium text-xs hover:bg-stone-200 transition">← Kembali ke Halaman Masuk</button>
+                <button onclick="toggleAuthMode('login')" class="w-full py-2.5 rounded-xl bg-stone-800 text-stone-300 font-medium text-xs hover:bg-stone-700 transition">← Kembali ke Halaman Masuk</button>
             </div>
 
         </div>
     </div>
 
     <!-- POP-UP MANDATORI PROFIL (USER BARU) -->
-    <div id="profileModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto">
+    <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-stone-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-800 max-h-[90vh] overflow-y-auto">
             <div class="text-center mb-4">
-                <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800">Wajib Diisi</span>
-                <h3 class="text-lg font-bold mt-2">Lengkapi Detail Profil Pengguna</h3>
-                <p class="text-xs text-stone-500 mt-1">Harap isi detail profil pernikahan Anda sebelum melanjutkan.</p>
+                <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-400">Wajib Diisi</span>
+                <h3 class="text-lg font-bold mt-2 text-stone-100">Lengkapi Detail Profil Pengguna</h3>
+                <p class="text-xs text-stone-400 mt-1">Harap isi detail profil pernikahan Anda sebelum melanjutkan.</p>
             </div>
             <form onsubmit="handleSaveProfile(event)" class="space-y-3 text-left">
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Foto Profil (Upload File / Gambar)</label>
-                    <input type="file" id="profFile" accept="image/*" onchange="previewImage(event)" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-700 hover:file:bg-stone-200">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Foto Profil (Upload File / Gambar)</label>
+                    <input type="file" id="profFile" accept="image/*" onchange="previewImage(event)" class="w-full text-xs text-stone-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-800 file:text-stone-200 hover:file:bg-stone-700">
                     <input type="hidden" id="profFotoUrl">
-                    <img id="imgPreview" class="w-20 h-20 rounded-full object-cover mx-auto mt-2 hidden border-2 border-stone-200 shadow">
+                    <img id="imgPreview" class="w-20 h-20 rounded-full object-cover mx-auto mt-2 hidden border-2 border-stone-700 shadow">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-stone-600 mb-1">Nama Suami</label>
-                        <input type="text" id="profSuami" required placeholder="M. Nur Rahman" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                        <label class="block text-xs font-medium text-stone-300 mb-1">Nama Suami</label>
+                        <input type="text" id="profSuami" required placeholder="M. Nur Rahman" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-stone-600 mb-1">Nama Istri</label>
-                        <input type="text" id="profIstri" required placeholder="Neyla Chusniyah" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                        <label class="block text-xs font-medium text-stone-300 mb-1">Nama Istri</label>
+                        <input type="text" id="profIstri" required placeholder="Neyla Chusniyah" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Alamat</label>
-                    <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Alamat</label>
+                    <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-600 mb-1">Tanggal Pernikahan</label>
-                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan</label>
+                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                 </div>
                 <button type="submit" id="saveProfBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-lg transition mt-4">Simpan Profil Saya</button>
             </form>
@@ -134,17 +136,17 @@
     <!-- MAIN DASHBOARD (USER BERANDA) -->
     <div id="dashboardSection" class="hidden min-h-screen">
         <!-- Navbar -->
-        <nav class="bg-white/90 backdrop-blur-md border-b border-stone-200/50 sticky top-0 z-40">
+        <nav class="bg-stone-900/80 backdrop-blur-md border-b border-stone-800 sticky top-0 z-40">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <img id="navUserFoto" src="https://via.placeholder.com/150" class="w-9 h-9 rounded-full object-cover border">
-                    <span class="font-bold text-sm" id="displayUsername">Rahman&Neyla</span>
+                    <img id="navUserFoto" src="https://via.placeholder.com/150" class="w-9 h-9 rounded-full object-cover border border-stone-700">
+                    <span class="font-bold text-sm text-stone-100" id="displayUsername">Rahman&Neyla</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button onclick="switchTab('input')" id="tabInputBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Input Tamu</button>
                     <button onclick="switchTab('data')" id="tabDataBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Data Tamu</button>
                     <button onclick="switchTab('profil')" id="tabProfBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Profil</button>
-                    <button onclick="logout()" class="p-1.5 text-stone-400 hover:text-red-500 text-xs font-medium ml-2" title="Keluar">Keluar</button>
+                    <button onclick="logout()" class="p-1.5 text-stone-400 hover:text-red-400 text-xs font-medium ml-2" title="Keluar">Keluar</button>
                 </div>
             </div>
         </nav>
@@ -153,23 +155,23 @@
             
             <!-- TAB 1: INPUT TAMU -->
             <div id="tabInputContent" class="space-y-6">
-                <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-100 max-w-lg mx-auto">
-                    <h2 class="text-lg font-bold mb-1 text-stone-800">Form Input Data Tamu</h2>
+                <div class="bg-stone-900/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-800 max-w-lg mx-auto">
+                    <h2 class="text-lg font-bold mb-1 text-stone-100">Form Input Data Tamu</h2>
                     <p class="text-xs text-stone-400 mb-6">Masukkan data tamu undangan dan amplop/kado.</p>
                     
                     <form id="guestForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
                         <input type="hidden" id="editRowId" value="">
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Nama Lengkap Tamu</label>
-                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Nama Lengkap Tamu</label>
+                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat / Asal Tamu</label>
-                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Alamat / Asal Tamu</label>
+                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Nominal (Rupiah)</label>
-                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Nominal (Rupiah)</label>
+                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                         </div>
                         <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md">Simpan Data Tamu</button>
                     </form>
@@ -178,21 +180,21 @@
 
             <!-- TAB 2: DATA BASE TAMU -->
             <div id="tabDataContent" class="hidden space-y-6">
-                <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-stone-100">
+                <div class="bg-stone-900/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-stone-800">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                         <div>
-                            <h2 class="text-lg font-bold">Database Tamu & Hadiah</h2>
-                            <p class="text-xs text-stone-400">Total Terkumpul: <span id="totalNominal" class="font-bold text-stone-800">Rp 0</span></p>
+                            <h2 class="text-lg font-bold text-stone-100">Database Tamu & Hadiah</h2>
+                            <p class="text-xs text-stone-400">Total Terkumpul: <span id="totalNominal" class="font-bold text-stone-100">Rp 0</span></p>
                         </div>
                         <div class="w-full md:w-72">
-                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 text-xs">
+                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
                         </div>
                     </div>
 
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="border-b border-stone-100 text-stone-400 font-medium">
+                                <tr class="border-b border-stone-800 text-stone-400 font-medium">
                                     <th class="py-3 px-4">Nama Tamu</th>
                                     <th class="py-3 px-4">Alamat</th>
                                     <th class="py-3 px-4">Nominal</th>
@@ -200,7 +202,7 @@
                                     <th class="py-3 px-4 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="guestTableBody">
+                            <tbody id="guestTableBody" class="text-stone-300">
                                 <!-- Data injected via JS -->
                             </tbody>
                         </table>
@@ -210,34 +212,37 @@
 
             <!-- TAB 3: EDIT PROFIL -->
             <div id="tabProfContent" class="hidden space-y-6">
-                <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-100 max-w-lg mx-auto">
-                    <h2 class="text-lg font-bold mb-1 text-stone-800">Sunting Profil Pengguna</h2>
+                <div class="bg-stone-900/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-800 max-w-lg mx-auto">
+                    <h2 class="text-lg font-bold mb-1 text-stone-100">Sunting Profil Pengguna</h2>
                     <p class="text-xs text-stone-400 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
                     
                     <form onsubmit="handleSaveProfile(event)" class="space-y-4">
                         <div class="text-center mb-4">
-                            <img id="imgEditPreview" class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-stone-200 shadow mb-2">
-                            <input type="file" id="profFileEdit" accept="image/*" onchange="previewImageEdit(event)" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-700 hover:file:bg-stone-200">
+                            <img id="imgEditPreview" class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-stone-700 shadow mb-2">
+                            <input type="file" id="profFileEdit" accept="image/*" onchange="previewImageEdit(event)" class="w-full text-xs text-stone-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-800 file:text-stone-200 hover:file:bg-stone-700">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-medium text-stone-600 mb-1">Nama Suami</label>
-                                <input type="text" id="profSuamiEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                                <label class="block text-xs font-medium text-stone-300 mb-1">Nama Suami</label>
+                                <input type="text" id="profSuamiEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-stone-600 mb-1">Nama Istri</label>
-                                <input type="text" id="profIstriEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                                <label class="block text-xs font-medium text-stone-300 mb-1">Nama Istri</label>
+                                <input type="text" id="profIstriEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Alamat</label>
-                            <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Alamat</label>
+                            <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-600 mb-1">Tanggal Pernikahan</label>
-                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan</label>
+                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
                         </div>
-                        <button type="submit" id="saveProfEditBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Perbarui Profil</button>
+                        <div class="flex gap-3 pt-2">
+                            <button type="button" onclick="switchTab('input')" class="w-1/3 py-3 rounded-xl bg-stone-800 text-stone-300 font-medium text-xs hover:bg-stone-700 transition">Kembali</button>
+                            <button type="submit" id="saveProfEditBtn" class="w-2/3 py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Perbarui Profil</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -251,16 +256,16 @@
         let currentTheme = localStorage.getItem("wedding_theme") || "sage";
         let guestDataList = [];
 
-        // Konfigurasi Warna Zennial (Mengubah warna dominan dan background secara keseluruhan)
+        // Konfigurasi Tema Warna Zennial untuk Dark Mode
         const themes = {
-            sage: { bg: "bg-emerald-900/10", primary: "bg-emerald-700", hover: "hover:bg-emerald-800", text: "text-emerald-700" },
-            terracotta: { bg: "bg-amber-900/10", primary: "bg-amber-700", hover: "hover:bg-amber-800", text: "text-amber-700" },
-            navy: { bg: "bg-blue-950/10", primary: "bg-blue-900", hover: "hover:bg-blue-950", text: "text-blue-900" },
-            dusty: { bg: "bg-rose-900/10", primary: "bg-rose-500", hover: "hover:bg-rose-600", text: "text-rose-500" },
-            lavender: { bg: "bg-purple-900/10", primary: "bg-purple-600", hover: "hover:bg-purple-700", text: "text-purple-600" },
-            mustard: { bg: "bg-yellow-900/10", primary: "bg-yellow-600", hover: "hover:bg-yellow-700", text: "text-yellow-600" },
-            teal: { bg: "bg-teal-900/10", primary: "bg-teal-700", hover: "hover:bg-teal-800", text: "text-teal-700" },
-            charcoal: { bg: "bg-stone-900/10", primary: "bg-stone-800", hover: "hover:bg-stone-900", text: "text-stone-800" }
+            sage: { bg: "bg-emerald-950/20", primary: "bg-emerald-600", hover: "hover:bg-emerald-700", text: "text-emerald-400" },
+            terracotta: { bg: "bg-amber-950/20", primary: "bg-amber-600", hover: "hover:bg-amber-700", text: "text-amber-400" },
+            navy: { bg: "bg-blue-950/20", primary: "bg-blue-600", hover: "hover:bg-blue-700", text: "text-blue-400" },
+            dusty: { bg: "bg-rose-950/20", primary: "bg-rose-500", hover: "hover:bg-rose-600", text: "text-rose-400" },
+            lavender: { bg: "bg-purple-950/20", primary: "bg-purple-600", hover: "hover:bg-purple-700", text: "text-purple-400" },
+            mustard: { bg: "bg-yellow-950/20", primary: "bg-yellow-600", hover: "hover:bg-yellow-700", text: "text-yellow-400" },
+            teal: { bg: "bg-teal-950/20", primary: "bg-teal-600", hover: "hover:bg-teal-700", text: "text-teal-400" },
+            charcoal: { bg: "bg-stone-900/40", primary: "bg-stone-700", hover: "hover:bg-stone-600", text: "text-stone-300" }
         };
 
         window.onload = function() {
@@ -279,7 +284,7 @@
             localStorage.setItem("wedding_theme", tName);
             const t = themes[tName];
             
-            document.getElementById("mainBody").className = `min-h-screen text-stone-800 transition-colors duration-500 ${t.bg}`;
+            document.getElementById("mainBody").className = `min-h-screen text-stone-100 transition-colors duration-500 bg-stone-950 ${t.bg}`;
             document.getElementById("loginBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
             document.getElementById("regBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
             document.getElementById("submitBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
@@ -312,7 +317,6 @@
         }
 
         function validateUsernameFormat(username) {
-            // Tanpa spasi & huruf kapital diawal (Contoh: Rahman&Neyla)
             const regex = /^[A-Z][a-zA-Z0-9&]*$/;
             return regex.test(username) && !username.includes(" ");
         }
@@ -378,7 +382,6 @@
                     currentUser = json.username;
                     localStorage.setItem("wedding_user", currentUser);
                     document.getElementById("authSection").classList.add("hidden");
-                    // Tampilkan pop-up wajib profil untuk user baru
                     document.getElementById("profileModal").classList.remove("hidden");
                 } else {
                     showPopup(json.message, "Gagal Mendaftar", "❌");
@@ -443,6 +446,8 @@
 
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
+                    // Perbarui langsung foto di navbar secara instan
+                    document.getElementById("navUserFoto").src = fotoUrl;
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
                 } else {
@@ -488,12 +493,14 @@
                 const json = await res.json();
                 if (json.status === "success") {
                     const p = json.profile;
-                    if (p.fotoUrl) document.getElementById("navUserFoto").src = p.fotoUrl;
+                    if (p.fotoUrl) {
+                        document.getElementById("navUserFoto").src = p.fotoUrl;
+                        document.getElementById("imgEditPreview").src = p.fotoUrl;
+                    }
                     document.getElementById("profSuamiEdit").value = p.namaSuami || "";
                     document.getElementById("profIstriEdit").value = p.namaIstri || "";
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
                     document.getElementById("profTanggalEdit").value = p.tanggalNikah || "";
-                    if (p.fotoUrl) document.getElementById("imgEditPreview").src = p.fotoUrl;
                 }
             } catch (err) {
                 console.error("Gagal muat profil", err);
@@ -519,7 +526,7 @@
             const divProf = document.getElementById("tabProfContent");
 
             [divInput, divData, divProf].forEach(d => d.classList.add("hidden"));
-            [btnInput, btnData, btnProf].forEach(b => b.className = "px-3 py-1.5 rounded-xl text-xs font-medium transition text-stone-600 hover:bg-white/50");
+            [btnInput, btnData, btnProf].forEach(b => b.className = "px-3 py-1.5 rounded-xl text-xs font-medium transition text-stone-400 hover:bg-stone-800");
 
             if (tab === 'input') {
                 divInput.classList.remove("hidden");
@@ -562,7 +569,7 @@
             let total = 0;
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-400">Belum ada data tamu terdaftar.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-stone-500">Belum ada data tamu terdaftar.</td></tr>`;
                 document.getElementById("totalNominal").textContent = "Rp 0";
                 return;
             }
@@ -570,14 +577,14 @@
             data.forEach(item => {
                 total += Number(item.nominal || 0);
                 const tr = document.createElement("tr");
-                tr.className = "border-b border-stone-50 hover:bg-stone-50/50 transition";
+                tr.className = "border-b border-stone-800/60 hover:bg-stone-800/30 transition";
                 tr.innerHTML = `
-                    <td class="py-3 px-4 font-medium">${item.nama}</td>
-                    <td class="py-3 px-4 text-stone-600">${item.alamat}</td>
-                    <td class="py-3 px-4 font-semibold text-stone-700">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-                    <td class="py-3 px-4 text-xs text-stone-400">${item.waktu}</td>
+                    <td class="py-3 px-4 font-medium text-stone-200">${item.nama}</td>
+                    <td class="py-3 px-4 text-stone-400">${item.alamat}</td>
+                    <td class="py-3 px-4 font-semibold text-stone-200">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-4 text-xs text-stone-500">${item.waktu}</td>
                     <td class="py-3 px-4 text-center">
-                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium">Sunting</button>
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -621,7 +628,6 @@
                 if (json.status === "success") {
                     showPopup(id ? "Data tamu berhasil diperbarui!" : "Data tamu berhasil disimpan!", "Sukses", "✅");
                     resetForm();
-                    // Tetap di menu input tamu (sesuai permintaan)
                 } else {
                     showPopup(json.message, "Gagal", "❌");
                 }
