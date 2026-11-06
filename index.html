@@ -12,6 +12,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Styling Khusus Mode Print / Cetak PDF */
+        @media print {
+            /* Sembunyikan elemen yang tidak perlu dicetak */
+            nav, button, #themePalette, .fixed, #searchInput, .no-print, th:last-child, td:last-child {
+                display: none !important;
+            }
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            #dashboardSection, #tabDataContent, .bg-stone-900\/90 {
+                background: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                color: black !important;
+            }
+            th, td {
+                border: 1px solid #000 !important;
+                padding: 8px !important;
+                color: black !important;
+            }
+            .print-title {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body id="mainBody" class="min-h-screen text-stone-100 transition-colors duration-500 bg-stone-950">
@@ -22,7 +56,7 @@
     </script>
 
     <!-- FLOATING ICON TEMA WARNA ZENNIAL -->
-    <div class="fixed bottom-6 right-6 z-50">
+    <div class="fixed bottom-6 right-6 z-50 no-print">
         <div id="themePalette" class="hidden mb-3 bg-stone-900/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-stone-800 flex flex-col gap-2">
             <span class="text-[10px] font-bold text-center text-stone-400 uppercase tracking-wider">Tema Warna</span>
             <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Sage Green"></button>
@@ -40,7 +74,7 @@
     </div>
 
     <!-- GLOBAL POP-UP NOTIFIKASI -->
-    <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
             <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
             <h3 id="popupTitle" class="text-lg font-bold text-stone-100">Pemberitahuan</h3>
@@ -50,7 +84,7 @@
     </div>
 
     <!-- HALAMAN LOGIN & DAFTAR -->
-    <div id="authSection" class="min-h-screen flex items-center justify-center p-4">
+    <div id="authSection" class="min-h-screen flex items-center justify-center p-4 no-print">
         <div class="bg-stone-900/90 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-800">
             
             <!-- FORM LOGIN -->
@@ -96,7 +130,7 @@
     </div>
 
     <!-- POP-UP MANDATORI PROFIL (USER BARU) -->
-    <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="bg-stone-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-800 max-h-[90vh] overflow-y-auto">
             <div class="text-center mb-4">
                 <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-400">Wajib Diisi</span>
@@ -136,7 +170,7 @@
     <!-- MAIN DASHBOARD (USER BERANDA) -->
     <div id="dashboardSection" class="hidden min-h-screen">
         <!-- Navbar -->
-        <nav class="bg-stone-900/80 backdrop-blur-md border-b border-stone-800 sticky top-0 z-40">
+        <nav class="bg-stone-900/80 backdrop-blur-md border-b border-stone-800 sticky top-0 z-40 no-print">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
                     <img id="navUserFoto" src="https://via.placeholder.com/150" class="w-9 h-9 rounded-full object-cover border border-stone-700">
@@ -180,14 +214,26 @@
 
             <!-- TAB 2: DATA BASE TAMU -->
             <div id="tabDataContent" class="hidden space-y-6">
+                <!-- JUDUL KHUSUS HASIL CETAK / PRINT -->
+                <div class="hidden print-title">
+                    <h1 class="text-xl font-bold">DAFTAR TAMU & HADIAH PERNIKAHAN</h1>
+                    <p class="text-sm" id="printSubTitle"></p>
+                    <hr class="my-2">
+                </div>
+
                 <div class="bg-stone-900/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-stone-800">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                         <div>
                             <h2 class="text-lg font-bold text-stone-100">Database Tamu & Hadiah</h2>
                             <p class="text-xs text-stone-400">Total Terkumpul: <span id="totalNominal" class="font-bold text-stone-100">Rp 0</span></p>
                         </div>
-                        <div class="w-full md:w-72">
-                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full px-4 py-2.5 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                        <div class="flex items-center gap-3 w-full md:w-auto">
+                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full md:w-64 px-4 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                            
+                            <!-- TOMBOL PRINT / CETAK PDF -->
+                            <button onclick="printGuestData()" id="printBtn" class="px-4 py-2 rounded-xl text-white font-medium text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
+                                🖨️ Cetak / PDF
+                            </button>
                         </div>
                     </div>
 
@@ -198,8 +244,8 @@
                                     <th class="py-3 px-4">Nama Tamu</th>
                                     <th class="py-3 px-4">Alamat</th>
                                     <th class="py-3 px-4">Nominal</th>
-                                    <th class="py-3 px-4">Waktu</th>
-                                    <th class="py-3 px-4 text-center">Aksi</th>
+                                    <th class="py-3 px-4 no-print">Waktu</th>
+                                    <th class="py-3 px-4 text-center no-print">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="guestTableBody" class="text-stone-300">
@@ -291,6 +337,7 @@
             document.getElementById("saveProfBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
             document.getElementById("saveProfEditBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
             document.getElementById("popupBtn").className = `w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition ${t.primary} ${t.hover}`;
+            document.getElementById("printBtn").className = `px-4 py-2 rounded-xl text-white font-medium text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap ${t.primary} ${t.hover}`;
             
             updateTabUI();
         }
@@ -446,7 +493,6 @@
 
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
-                    // Perbarui langsung foto di navbar secara instan
                     document.getElementById("navUserFoto").src = fotoUrl;
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
@@ -501,6 +547,8 @@
                     document.getElementById("profIstriEdit").value = p.namaIstri || "";
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
                     document.getElementById("profTanggalEdit").value = p.tanggalNikah || "";
+                    
+                    document.getElementById("printSubTitle").textContent = `Pasangan: ${p.namaSuami || ''} & ${p.namaIstri || ''} (${currentUser})`;
                 }
             } catch (err) {
                 console.error("Gagal muat profil", err);
@@ -582,8 +630,8 @@
                     <td class="py-3 px-4 font-medium text-stone-200">${item.nama}</td>
                     <td class="py-3 px-4 text-stone-400">${item.alamat}</td>
                     <td class="py-3 px-4 font-semibold text-stone-200">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-                    <td class="py-3 px-4 text-xs text-stone-500">${item.waktu}</td>
-                    <td class="py-3 px-4 text-center">
+                    <td class="py-3 px-4 text-xs text-stone-500 no-print">${item.waktu}</td>
+                    <td class="py-3 px-4 text-center no-print">
                         <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
                     </td>
                 `;
@@ -599,6 +647,11 @@
                 item.nama.toLowerCase().includes(query) || item.alamat.toLowerCase().includes(query)
             );
             renderTable(filtered);
+        }
+
+        // FUNGSI PRINT & SAVE PDF VIA CHROME
+        function printGuestData() {
+            window.print();
         }
 
         async function handleFormSubmit(e) {
