@@ -92,6 +92,22 @@
         </div>
     </div>
 
+    <!-- POP-UP KONFIRMASI DUPLIKASI NAMA & ALAMAT (POIN 4) -->
+    <div id="duplicateConfirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-blue-950 rounded-2xl max-w-md w-full p-6 shadow-2xl text-left border border-amber-500/50">
+            <div class="text-3xl mb-2 text-center">⚠️</div>
+            <h3 class="text-lg font-bold text-white text-center">Peringatan Duplikasi Data</h3>
+            <p id="duplicateMsg" class="text-xs text-blue-200 mt-2 mb-4 leading-relaxed">
+                Tamu dengan nama dan alamat yang sama persis sudah terdaftar dalam sistem. 
+                Jika ini adalah orang yang berbeda, mohon ubah atau tambahkan nama panggilan / kode lainnya (misalnya: <em>Budi Santoso (Kantor)</em> atau <em>Budi Santoso (Saudara)</em>).
+            </p>
+            <div class="flex gap-2">
+                <button onclick="closeDuplicateModal()" class="w-1/2 py-2.5 rounded-xl bg-blue-900 text-blue-200 text-xs font-semibold hover:bg-blue-800 transition">Perbaiki Nama</button>
+                <button onclick="forceSubmitGuest()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 text-blue-950 text-xs font-bold hover:bg-amber-400 transition shadow">Tetap Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- POP-UP KONFIRMASI HAPUS KUSTOM -->
     <div id="deleteConfirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="bg-blue-950 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-blue-800">
@@ -191,7 +207,11 @@
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 rounded-full bg-lime-400 text-blue-950 font-extrabold flex items-center justify-center text-sm shadow-inner">💍</div>
-                    <span class="font-bold text-sm text-white" id="displayUsername">Rahman&Neyla</span>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-sm text-white" id="displayUsername">Rahman&Neyla</span>
+                        <!-- Indikator Koneksi Online/Offline (Poin 5) -->
+                        <span id="connectionStatus" class="text-[9px] text-emerald-400 flex items-center gap-1 font-medium">● Online</span>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button onclick="switchTab('input')" id="tabInputBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Input Tamu</button>
@@ -208,10 +228,20 @@
             <div id="tabInputContent" class="space-y-6">
                 <div class="bg-blue-900/60 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-blue-500/30 max-w-lg mx-auto">
                     <h2 class="text-xl font-bold mb-1 text-white">Form Input Data Tamu</h2>
-                    <p class="text-xs text-blue-200 mb-6">Masukkan data tamu undangan dan amplop/kado.</p>
+                    <p class="text-xs text-blue-200 mb-6">Masukkan data tamu undangan beserta jenis pemberian.</p>
                     
                     <form id="guestForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
                         <input type="hidden" id="editRowId" value="">
+                        
+                        <!-- PILIHAN KATEGORI PEMBERIAN (POIN 2) -->
+                        <div>
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Jenis Pemberian</label>
+                            <select id="guestCategory" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs cursor-pointer">
+                                <option value="Amplop Uang">💵 Amplop Uang</option>
+                                <option value="Kado Barang">🎁 Kado Barang</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label class="block text-xs font-medium text-blue-200 mb-1">Nama Lengkap Tamu</label>
                             <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
@@ -221,7 +251,7 @@
                             <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-blue-200 mb-1">Nominal (Rupiah)</label>
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Nominal / Estimasi Nilai (Rupiah)</label>
                             <input type="text" id="guestAmount" required oninput="formatRupiahInput(this)" placeholder="Contoh: 100.000" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                         </div>
                         <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs transition shadow-md hover:bg-lime-300">Simpan Data Tamu</button>
@@ -243,11 +273,27 @@
                     <hr class="my-2">
                 </div>
 
+                <!-- WIDGET STATISTIK RINGKAS (POIN 3) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 no-print">
+                    <div class="bg-blue-900/40 border border-blue-500/30 p-4 rounded-2xl backdrop-blur-md">
+                        <span class="text-[11px] text-blue-300 font-medium">Total Terkumpul</span>
+                        <h3 id="statTotalNominal" class="text-lg font-extrabold text-lime-400 mt-0.5">Rp 0</h3>
+                    </div>
+                    <div class="bg-blue-900/40 border border-blue-500/30 p-4 rounded-2xl backdrop-blur-md">
+                        <span class="text-[11px] text-blue-300 font-medium">Total Tamu Berdonasi</span>
+                        <h3 id="statTotalTamu" class="text-lg font-extrabold text-white mt-0.5">0 Orang</h3>
+                    </div>
+                    <div class="bg-blue-900/40 border border-blue-500/30 p-4 rounded-2xl backdrop-blur-md">
+                        <span class="text-[11px] text-blue-300 font-medium">Sumbangan Terbesar</span>
+                        <h3 id="statMaxNominal" class="text-lg font-extrabold text-lime-400 mt-0.5">Rp 0</h3>
+                    </div>
+                </div>
+
                 <div class="bg-blue-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-blue-500/30">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                         <div>
                             <h2 class="text-xl font-bold text-white">Database Tamu & Hadiah</h2>
-                            <p class="text-xs text-blue-200">Total Terkumpul: <span id="totalNominal" class="font-extrabold text-lime-400 text-sm">Rp 0</span></p>
+                            <p class="text-xs text-blue-200">Kelola dan pantau seluruh catatan amplop & kado.</p>
                         </div>
                         <div class="flex items-center gap-3 w-full md:w-auto">
                             <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full md:w-64 px-4 py-2 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
@@ -264,6 +310,7 @@
                                     <th class="py-3 px-3 text-center w-12">No.</th>
                                     <th class="py-3 px-4">Nama Tamu</th>
                                     <th class="py-3 px-4">Alamat</th>
+                                    <th class="py-3 px-4">Kategori</th>
                                     <th class="py-3 px-4">Nominal</th>
                                     <th class="py-3 px-4 no-print">Waktu</th>
                                     <th class="py-3 px-4 text-center no-print">Aksi</th>
@@ -320,6 +367,7 @@
         let currentTheme = localStorage.getItem("wedding_theme") || "baseblue";
         let guestDataList = [];
         let pendingDeleteId = null;
+        let cachedFormPayload = null; // Menyimpan data sementara jika terdeteksi duplikasi
 
         // Konfigurasi Tema Warna
         const themes = {
@@ -331,10 +379,28 @@
 
         window.onload = function() {
             setTheme(currentTheme);
+            setupNetworkListener();
             if (currentUser) {
                 checkUserStatusAndLoad();
             }
         };
+
+        // Poin 5: Listener status koneksi online / offline
+        function setupNetworkListener() {
+            const statusEl = document.getElementById("connectionStatus");
+            function updateOnlineStatus() {
+                if (navigator.onLine) {
+                    statusEl.textContent = "● Online";
+                    statusEl.className = "text-[9px] text-emerald-400 flex items-center gap-1 font-medium";
+                } else {
+                    statusEl.textContent = "○ Offline";
+                    statusEl.className = "text-[9px] text-amber-400 flex items-center gap-1 font-medium";
+                }
+            }
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
 
         // Fungsi Format Rupiah Otomatis saat mengetik
         function formatRupiahInput(input) {
@@ -618,6 +684,7 @@
                 if (json.status === "success") {
                     guestDataList = json.data;
                     renderTable(guestDataList);
+                    updateStatistics(guestDataList); // Update Statistik (Poin 3)
                 } else {
                     showPopup(json.message, "Akses Terbatas", "🔒");
                     logout();
@@ -627,29 +694,55 @@
             }
         }
 
+        // Poin 3: Kalkulasi & Render Widget Statistik
+        function updateStatistics(data) {
+            let totalNominal = 0;
+            let maxNominal = 0;
+            let totalTamu = data.length;
+
+            data.forEach(item => {
+                let nom = Number(item.nominal || 0);
+                totalNominal += nom;
+                if (nom > maxNominal) {
+                    maxNominal = nom;
+                }
+            });
+
+            document.getElementById("statTotalNominal").textContent = `Rp ${totalNominal.toLocaleString('id-ID')}`;
+            document.getElementById("statTotalTamu").textContent = `${totalTamu} Orang`;
+            document.getElementById("statMaxNominal").textContent = `Rp ${maxNominal.toLocaleString('id-ID')}`;
+        }
+
         function renderTable(data) {
             const tbody = document.getElementById("guestTableBody");
             tbody.innerHTML = "";
             let total = 0;
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-blue-300">Belum ada data tamu terdaftar.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-blue-300">Belum ada data tamu terdaftar.</td></tr>`;
                 document.getElementById("totalNominal").textContent = "Rp 0";
                 return;
             }
 
             data.forEach((item, index) => {
                 total += Number(item.nominal || 0);
+                // Jika data lama belum ada kategori, default ke Amplop Uang
+                let kat = item.kategori || "Amplop Uang";
+                let katBadge = kat === "Kado Barang" 
+                    ? '<span class="px-2 py-0.5 rounded-md bg-purple-900/50 text-purple-300 border border-purple-700/50 text-[10px] font-semibold">🎁 Kado</span>' 
+                    : '<span class="px-2 py-0.5 rounded-md bg-emerald-900/50 text-emerald-300 border border-emerald-700/50 text-[10px] font-semibold">💵 Amplop</span>';
+
                 const tr = document.createElement("tr");
                 tr.className = "border-b border-blue-800/60 hover:bg-blue-800/30 transition";
                 tr.innerHTML = `
                     <td class="py-3 px-3 text-center text-blue-300 font-medium">${index + 1}</td>
                     <td class="py-3 px-4 font-semibold text-white">${item.nama}</td>
                     <td class="py-3 px-4 text-blue-200">${item.alamat}</td>
+                    <td class="py-3 px-4">${katBadge}</td>
                     <td class="py-3 px-4 font-bold text-lime-400">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
                     <td class="py-3 px-4 text-xs text-blue-300 no-print">${item.waktu}</td>
                     <td class="py-3 px-4 text-center no-print flex justify-center gap-2">
-                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-2.5 py-1 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-medium">Sunting</button>
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}', '${kat}')" class="text-xs px-2.5 py-1 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-medium">Sunting</button>
                         <button onclick="promptDeleteGuest('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-red-400 font-medium border border-red-900/50" title="Hapus">🗑️</button>
                     </td>
                 `;
@@ -704,22 +797,53 @@
             window.print();
         }
 
+        // POIN 4: Pengecekan duplikasi nama dan alamat sebelum simpan
         async function handleFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById("editRowId").value;
-            const nama = document.getElementById("guestName").value;
-            const alamat = document.getElementById("guestAddress").value;
+            const nama = document.getElementById("guestName").value.trim();
+            const alamat = document.getElementById("guestAddress").value.trim();
+            const kategori = document.getElementById("guestCategory").value;
             const rawNominal = document.getElementById("guestAmount").value.replace(/\./g, '');
 
+            cachedFormPayload = {
+                action: id ? "updateGuest" : "addGuest",
+                user: currentUser,
+                guest: { id: id, nama: nama, alamat: alamat, kategori: kategori, nominal: rawNominal }
+            };
+
+            // Jika bukan mode edit, cek duplikasi nama DAN alamat
+            if (!id) {
+                const isDuplicate = guestDataList.some(item => 
+                    item.nama.trim().toLowerCase() === nama.toLowerCase() && 
+                    item.alamat.trim().toLowerCase() === alamat.toLowerCase()
+                );
+
+                if (isDuplicate) {
+                    // Tampilkan pop-up peringatan duplikasi khusus (Poin 4)
+                    document.getElementById("duplicateConfirmModal").classList.remove("hidden");
+                    return;
+                }
+            }
+
+            executeGuestSubmit(cachedFormPayload);
+        }
+
+        function closeDuplicateModal() {
+            document.getElementById("duplicateConfirmModal").classList.add("hidden");
+            cachedFormPayload = null;
+        }
+
+        function forceSubmitGuest() {
+            document.getElementById("duplicateConfirmModal").classList.add("hidden");
+            if (cachedFormPayload) {
+                executeGuestSubmit(cachedFormPayload);
+            }
+        }
+
+        async function executeGuestSubmit(payload) {
             const btn = document.getElementById("submitBtn");
             btn.textContent = "Menyimpan...";
-
-            const action = id ? "updateGuest" : "addGuest";
-            const payload = {
-                action: action,
-                user: currentUser,
-                guest: { id: id, nama: nama, alamat: alamat, nominal: rawNominal }
-            };
 
             try {
                 const res = await fetch(WEB_APP_URL, {
@@ -729,8 +853,9 @@
                 const json = await res.json();
 
                 if (json.status === "success") {
-                    showInlineNotification(id ? "✅ Data tamu berhasil diperbarui!" : "✅ Data tamu berhasil disimpan!");
+                    showInlineNotification(payload.guest.id ? "✅ Data tamu berhasil diperbarui!" : "✅ Data tamu berhasil disimpan!");
                     resetForm();
+                    fetchGuestData(); // Refresh data otomatis agar statistik & tabel langsung terupdate
                 } else {
                     showInlineNotification("❌ " + json.message, false);
                 }
@@ -738,14 +863,16 @@
                 showInlineNotification("❌ Gagal menyimpan data tamu.", false);
             } finally {
                 btn.textContent = "Simpan Data Tamu";
+                cachedFormPayload = null;
             }
         }
 
-        function editGuest(id, nama, alamat, nominal) {
+        function editGuest(id, nama, alamat, nominal, kategori = "Amplop Uang") {
             switchTab('input');
             document.getElementById("editRowId").value = id;
             document.getElementById("guestName").value = nama;
             document.getElementById("guestAddress").value = alamat;
+            document.getElementById("guestCategory").value = kategori;
             document.getElementById("guestAmount").value = Number(nominal).toLocaleString('id-ID');
             document.getElementById("submitBtn").textContent = "Perbarui Data Tamu";
         }
