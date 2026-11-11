@@ -157,17 +157,10 @@
             <div class="text-center mb-4">
                 <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-lime-400/20 text-lime-400">Wajib Diisi</span>
                 <h3 class="text-xl font-bold mt-2 text-white">Lengkapi Detail Profil Pengguna</h3>
-                <p class="text-xs text-blue-200 mt-1">Harap pilih foto avatar dan isi detail profil pernikahan Anda.</p>
+                <p class="text-xs text-blue-200 mt-1">Harap isi detail profil pernikahan Anda.</p>
             </div>
             <form onsubmit="handleSaveProfile(event)" class="space-y-4 text-left">
-                <!-- PILIH AVATAR FOTO (10 PILIHAN) -->
-                <div>
-                    <label class="block text-xs font-medium text-blue-200 mb-2 text-center">Pilih Foto Avatar Profil</label>
-                    <input type="hidden" id="profFotoUrl" value="https://files.catbox.moe/bewbfd.jpg">
-                    <div class="grid grid-cols-5 gap-2" id="avatarPickerModal">
-                        <!-- Diisi via Javascript -->
-                    </div>
-                </div>
+                <input type="hidden" id="profFotoUrl" value="">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-medium text-blue-200 mb-1">Nama Suami</label>
@@ -197,7 +190,7 @@
         <nav class="bg-blue-950/80 backdrop-blur-md border-b border-blue-800 sticky top-0 z-40 no-print">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <img id="navUserFoto" src="https://files.catbox.moe/bewbfd.jpg" class="w-9 h-9 rounded-full object-cover border border-blue-500" alt="Avatar">
+                    <div class="w-9 h-9 rounded-full bg-lime-400 text-blue-950 font-extrabold flex items-center justify-center text-sm shadow-inner">💍</div>
                     <span class="font-bold text-sm text-white" id="displayUsername">Rahman&Neyla</span>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -291,14 +284,7 @@
                     <p class="text-xs text-blue-200 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
                     
                     <form onsubmit="handleSaveProfile(event)" class="space-y-4">
-                        <!-- PILIH AVATAR FOTO EDIT -->
-                        <div>
-                            <label class="block text-xs font-medium text-blue-200 mb-2 text-center">Pilih Foto Avatar Profil</label>
-                            <input type="hidden" id="profFotoUrlEdit" value="https://files.catbox.moe/bewbfd.jpg">
-                            <div class="grid grid-cols-5 gap-2" id="avatarPickerEdit">
-                                <!-- Diisi via Javascript -->
-                            </div>
-                        </div>
+                        <input type="hidden" id="profFotoUrlEdit" value="">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-medium text-blue-200 mb-1">Nama Suami</label>
@@ -335,20 +321,6 @@
         let guestDataList = [];
         let pendingDeleteId = null;
 
-        // Daftar 10 URL Avatar Foto
-        const avatarUrls = [
-            "https://files.catbox.moe/bewbfd.jpg",
-            "https://files.catbox.moe/smjead.avif",
-            "https://files.catbox.moe/jr0pcn.jpg",
-            "https://files.catbox.moe/a9p7a3.jpg",
-            "https://files.catbox.moe/2d5klv.jpg",
-            "https://files.catbox.moe/ptgxmb.jpg",
-            "https://files.catbox.moe/h0jos1.jpg",
-            "https://files.catbox.moe/sn0lm7.jpg",
-            "https://files.catbox.moe/2w1bh2.jpg",
-            "https://files.catbox.moe/4b76gi.jpg"
-        ];
-
         // Konfigurasi Tema Warna
         const themes = {
             baseblue: { bg: "bg-[#0052FF]", primary: "bg-lime-400 text-blue-950 hover:bg-lime-300", navBg: "bg-blue-950/80" },
@@ -359,28 +331,10 @@
 
         window.onload = function() {
             setTheme(currentTheme);
-            renderAvatarPickers();
             if (currentUser) {
                 checkUserStatusAndLoad();
             }
         };
-
-        function renderAvatarPickers() {
-            const containers = [document.getElementById("avatarPickerModal"), document.getElementById("avatarPickerEdit")];
-            containers.forEach((container, idx) => {
-                if (!container) return;
-                container.innerHTML = "";
-                avatarUrls.forEach((url, i) => {
-                    const btn = document.createElement("button");
-                    const mode = idx === 0 ? 'modal' : 'edit';
-                    btn.type = "button";
-                    btn.onclick = () => selectAvatar(url, mode);
-                    btn.className = `avatar-opt-${mode} w-full h-12 rounded-xl bg-blue-900 border-2 overflow-hidden transition hover:scale-105 ${i === 0 ? 'border-lime-400 ring-2 ring-lime-400' : 'border-blue-700'}`;
-                    btn.innerHTML = `<img src="${url}" class="w-full h-full object-cover" alt="Avatar ${i+1}">`;
-                    container.appendChild(btn);
-                });
-            });
-        }
 
         // Fungsi Format Rupiah Otomatis saat mengetik
         function formatRupiahInput(input) {
@@ -454,32 +408,6 @@
         function validateUsernameFormat(username) {
             const regex = /^[A-Z][a-zA-Z0-9&]*$/;
             return regex.test(username) && !username.includes(" ");
-        }
-
-        function selectAvatar(url, mode) {
-            if (mode === 'modal') {
-                document.getElementById("profFotoUrl").value = url;
-                document.querySelectorAll(".avatar-opt-modal").forEach(btn => {
-                    btn.classList.remove("border-lime-400", "ring-2", "ring-lime-400");
-                    btn.classList.add("border-blue-700");
-                    const img = btn.querySelector("img");
-                    if (img && img.src === url) {
-                        btn.classList.add("border-lime-400", "ring-2", "ring-lime-400");
-                        btn.classList.remove("border-blue-700");
-                    }
-                });
-            } else {
-                document.getElementById("profFotoUrlEdit").value = url;
-                document.querySelectorAll(".avatar-opt-edit").forEach(btn => {
-                    btn.classList.remove("border-lime-400", "ring-2", "ring-lime-400");
-                    btn.classList.add("border-blue-700");
-                    const img = btn.querySelector("img");
-                    if (img && img.src === url) {
-                        btn.classList.add("border-lime-400", "ring-2", "ring-lime-400");
-                        btn.classList.remove("border-blue-700");
-                    }
-                });
-            }
         }
 
         async function handleLogin() {
@@ -557,7 +485,6 @@
             e.preventDefault();
             const isEditMode = !document.getElementById("profileModal").classList.contains("hidden") ? false : true;
 
-            const fotoUrl = isEditMode ? document.getElementById("profFotoUrlEdit").value : document.getElementById("profFotoUrl").value;
             const namaSuami = isEditMode ? document.getElementById("profSuamiEdit").value : document.getElementById("profSuami").value;
             const namaIstri = isEditMode ? document.getElementById("profIstriEdit").value : document.getElementById("profIstri").value;
             const alamat = isEditMode ? document.getElementById("profAlamatEdit").value : document.getElementById("profAlamat").value;
@@ -569,7 +496,7 @@
             const payload = {
                 action: "saveProfile",
                 user: currentUser,
-                profile: { namaSuami, namaIstri, alamat, tanggalNikah, fotoUrl }
+                profile: { namaSuami, namaIstri, alamat, tanggalNikah, fotoUrl: "" }
             };
 
             try {
@@ -581,8 +508,6 @@
 
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
-                    document.getElementById("navUserFoto").src = fotoUrl;
-                    selectAvatar(fotoUrl, 'edit');
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
                 } else {
@@ -628,17 +553,15 @@
                 const json = await res.json();
                 if (json.status === "success") {
                     const p = json.profile;
-                    const activeIcon = p.fotoUrl || avatarUrls[0];
-                    document.getElementById("navUserFoto").src = activeIcon;
-                    selectAvatar(activeIcon, 'edit');
 
                     document.getElementById("profSuamiEdit").value = p.namaSuami || "";
                     document.getElementById("profIstriEdit").value = p.namaIstri || "";
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
                     
                     if (p.tanggalNikah) {
-                        const formattedDate = new Date(p.tanggalNikah).toISOString().split('T')[0];
-                        document.getElementById("profTanggalEdit").value = formattedDate;
+                        // Memperbaiki bug tanggal berkurang 1 akibat timezone offset dengan mengambil substring tanggal mentah (YYYY-MM-DD)
+                        let cleanDate = p.tanggalNikah.toString().split('T')[0];
+                        document.getElementById("profTanggalEdit").value = cleanDate;
                     }
                     document.getElementById("printSubTitle").textContent = `Pasangan: ${p.namaSuami || ''} & ${p.namaIstri || ''} (${currentUser})`;
                 }
@@ -786,7 +709,6 @@
             const id = document.getElementById("editRowId").value;
             const nama = document.getElementById("guestName").value;
             const alamat = document.getElementById("guestAddress").value;
-            // Menghilangkan titik ribuan sebelum dikirim ke backend
             const rawNominal = document.getElementById("guestAmount").value.replace(/\./g, '');
 
             const btn = document.getElementById("submitBtn");
@@ -824,7 +746,6 @@
             document.getElementById("editRowId").value = id;
             document.getElementById("guestName").value = nama;
             document.getElementById("guestAddress").value = alamat;
-            // Format nominal dengan titik saat dimasukkan ke input edit
             document.getElementById("guestAmount").value = Number(nominal).toLocaleString('id-ID');
             document.getElementById("submitBtn").textContent = "Perbarui Data Tamu";
         }
