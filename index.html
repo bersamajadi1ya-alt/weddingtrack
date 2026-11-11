@@ -559,7 +559,6 @@
                     document.getElementById("profAlamatEdit").value = p.alamat || "";
                     
                     if (p.tanggalNikah) {
-                        // Memperbaiki bug tanggal berkurang 1 akibat timezone offset dengan mengambil substring tanggal mentah (YYYY-MM-DD)
                         let cleanDate = p.tanggalNikah.toString().split('T')[0];
                         document.getElementById("profTanggalEdit").value = cleanDate;
                     }
@@ -574,7 +573,8 @@
             localStorage.removeItem("wedding_user");
             currentUser = "";
             document.getElementById("dashboardSection").classList.add("hidden");
-            document.getElementById("authSection").classList.add("hidden");
+            document.getElementById("profileModal").classList.add("hidden");
+            document.getElementById("authSection").classList.remove("hidden");
             toggleAuthMode('login');
         }
 
