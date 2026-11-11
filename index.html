@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Guest & Gift Tracker - Dark Zennial</title>
+    <title>Wedding Guest & Gift Tracker - Base Club Theme</title>
     <!-- Favicon & Thumbnail -->
     <link rel="icon" type="image/png" href="https://files.catbox.moe/s1opzr.png">
     <meta property="og:image" content="https://files.catbox.moe/s1opzr.png">
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
-        /* Custom style untuk kalender input date di mode dark */
+        /* Background Grid Pattern ala Base Club */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* Custom style untuk kalender input date di mode dark/blue */
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
             cursor: pointer;
@@ -28,7 +36,7 @@
                 background-color: white !important;
                 color: black !important;
             }
-            #dashboardSection, #tabDataContent, .bg-stone-900\/90 {
+            #dashboardSection, #tabDataContent, .bg-blue-900\/90, .backdrop-blur-md {
                 background: transparent !important;
                 box-shadow: none !important;
                 border: none !important;
@@ -53,49 +61,45 @@
         }
     </style>
 </head>
-<body id="mainBody" class="min-h-screen text-stone-100 transition-colors duration-500 bg-stone-950">
+<body id="mainBody" class="min-h-screen text-white transition-colors duration-500 bg-[#0052FF] bg-grid-pattern">
 
     <!-- LINK API BACKEND INTEGRATED -->
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrCs0nurQWvnxqKhd8YX0N6eRYz35PHdiKPGEFBUIf0LBrGkk5zHW75KK_E8z01F4G/exec";
     </script>
 
-    <!-- FLOATING ICON TEMA WARNA ZENNIAL -->
+    <!-- FLOATING ICON TEMA WARNA -->
     <div class="fixed bottom-6 right-6 z-50 no-print">
-        <div id="themePalette" class="hidden mb-3 bg-stone-900/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-stone-800 flex flex-col gap-2">
-            <span class="text-[10px] font-bold text-center text-stone-400 uppercase tracking-wider">Tema Warna</span>
-            <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Sage Green"></button>
-            <button onclick="setTheme('terracotta')" class="w-8 h-8 rounded-full bg-amber-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Terracotta"></button>
-            <button onclick="setTheme('navy')" class="w-8 h-8 rounded-full bg-blue-700 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Navy Blue"></button>
-            <button onclick="setTheme('dusty')" class="w-8 h-8 rounded-full bg-rose-500 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Dusty Rose"></button>
-            <button onclick="setTheme('lavender')" class="w-8 h-8 rounded-full bg-purple-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Lavender"></button>
-            <button onclick="setTheme('mustard')" class="w-8 h-8 rounded-full bg-yellow-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Mustard"></button>
-            <button onclick="setTheme('teal')" class="w-8 h-8 rounded-full bg-teal-600 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Teal"></button>
-            <button onclick="setTheme('charcoal')" class="w-8 h-8 rounded-full bg-stone-700 mx-auto ring-2 ring-stone-900 shadow hover:scale-110 transition" title="Charcoal"></button>
+        <div id="themePalette" class="hidden mb-3 bg-blue-950/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-blue-800 flex flex-col gap-2">
+            <span class="text-[10px] font-bold text-center text-blue-300 uppercase tracking-wider">Tema Warna</span>
+            <button onclick="setTheme('baseblue')" class="w-8 h-8 rounded-full bg-[#0052FF] mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Base Blue"></button>
+            <button onclick="setTheme('sage')" class="w-8 h-8 rounded-full bg-emerald-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Sage Green"></button>
+            <button onclick="setTheme('terracotta')" class="w-8 h-8 rounded-full bg-amber-600 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Terracotta"></button>
+            <button onclick="setTheme('charcoal')" class="w-8 h-8 rounded-full bg-stone-800 mx-auto ring-2 ring-white shadow hover:scale-110 transition" title="Charcoal"></button>
         </div>
-        <button onclick="toggleThemePalette()" class="w-12 h-12 rounded-full bg-stone-900 text-stone-200 shadow-xl border border-stone-800 flex items-center justify-center hover:rotate-45 transition duration-300 text-xl">
+        <button onclick="toggleThemePalette()" class="w-12 h-12 rounded-full bg-white text-blue-900 shadow-xl border border-blue-200 flex items-center justify-center hover:rotate-45 transition duration-300 text-xl font-bold">
             🎨
         </button>
     </div>
 
     <!-- GLOBAL POP-UP NOTIFIKASI -->
     <div id="popupAlert" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
+        <div class="bg-blue-950 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-blue-800">
             <div id="popupIcon" class="text-3xl mb-2">ℹ️</div>
-            <h3 id="popupTitle" class="text-lg font-bold text-stone-100">Pemberitahuan</h3>
-            <p id="popupMessage" class="text-xs text-stone-400 mt-2 mb-5"></p>
-            <button onclick="closePopup()" id="popupBtn" class="w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition">Tutup</button>
+            <h3 id="popupTitle" class="text-lg font-bold text-white">Pemberitahuan</h3>
+            <p id="popupMessage" class="text-xs text-blue-200 mt-2 mb-5"></p>
+            <button onclick="closePopup()" id="popupBtn" class="w-full py-2.5 rounded-xl text-blue-950 bg-lime-400 text-xs font-bold shadow transition hover:bg-lime-300">Tutup</button>
         </div>
     </div>
 
     <!-- POP-UP KONFIRMASI HAPUS KUSTOM -->
     <div id="deleteConfirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-stone-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-stone-800">
+        <div class="bg-blue-950 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center border border-blue-800">
             <div class="text-3xl mb-2">⚠️</div>
-            <h3 class="text-lg font-bold text-stone-100">Konfirmasi Hapus</h3>
-            <p class="text-xs text-stone-400 mt-2 mb-5">Apakah Anda yakin ingin menghapus data tamu ini? Data yang sudah dihapus tidak dapat diubah lagi.</p>
+            <h3 class="text-lg font-bold text-white">Konfirmasi Hapus</h3>
+            <p class="text-xs text-blue-200 mt-2 mb-5">Apakah Anda yakin ingin menghapus data tamu ini? Data yang sudah dihapus tidak dapat diubah lagi.</p>
             <div class="flex gap-2">
-                <button onclick="closeDeleteModal()" class="w-1/2 py-2.5 rounded-xl bg-stone-800 text-stone-300 text-xs font-semibold hover:bg-stone-700 transition">Batal</button>
+                <button onclick="closeDeleteModal()" class="w-1/2 py-2.5 rounded-xl bg-blue-900 text-blue-200 text-xs font-semibold hover:bg-blue-800 transition">Batal</button>
                 <button id="confirmDeleteBtn" class="w-1/2 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700 transition shadow">Hapus</button>
             </div>
         </div>
@@ -103,45 +107,45 @@
 
     <!-- HALAMAN LOGIN & DAFTAR -->
     <div id="authSection" class="min-h-screen flex items-center justify-center p-4 no-print">
-        <div class="bg-stone-900/90 backdrop-blur-md rounded-3xl max-w-md w-full p-8 shadow-2xl border border-stone-800">
+        <div class="bg-blue-900/60 backdrop-blur-xl rounded-3xl max-w-md w-full p-8 shadow-2xl border border-blue-500/30">
             
             <!-- FORM LOGIN -->
             <div id="loginBox" class="space-y-4">
                 <div class="text-center">
-                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-stone-800 text-stone-200">💍</div>
-                    <h1 class="text-xl font-bold tracking-tight text-stone-100">Masuk Pengguna</h1>
-                    <p class="text-xs text-stone-400 mt-1">Kelola data tamu dan amplop pernikahan Anda.</p>
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center text-2xl shadow-inner bg-lime-400 text-blue-950 font-bold">💍</div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white">Masuk Pengguna</h1>
+                    <p class="text-xs text-blue-200 mt-1">Kelola data tamu dan amplop pernikahan Anda.</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Nama Pengguna</label>
-                    <input type="text" id="loginUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Nama Pengguna</label>
+                    <input type="text" id="loginUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-blue-950/80 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl bg-blue-950/80 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                 </div>
-                <button onclick="handleLogin()" id="loginBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Masuk ke Dashboard</button>
+                <button onclick="handleLogin()" id="loginBtn" class="w-full py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs shadow-md transition hover:bg-lime-300">Masuk ke Dashboard</button>
                 <div class="text-center pt-2">
-                    <button onclick="toggleAuthMode('register')" class="text-xs text-stone-400 hover:text-stone-200 underline">Belum punya akun? Daftar Akun Baru</button>
+                    <button onclick="toggleAuthMode('register')" class="text-xs text-blue-200 hover:text-white underline">Belum punya akun? Daftar Akun Baru</button>
                 </div>
             </div>
 
             <!-- FORM DAFTAR AKUN BARU -->
             <div id="registerBox" class="space-y-4 hidden">
                 <div class="text-center">
-                    <h1 class="text-xl font-bold tracking-tight text-stone-100">Buat Akun Baru</h1>
-                    <p class="text-xs text-stone-400 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh : Rahman&Neyla)</p>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white">Buat Akun Baru</h1>
+                    <p class="text-xs text-blue-200 mt-1">Format username wajib tanpa spasi, dan berawalan huruf kapital (Contoh : Rahman&Neyla)</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Nama Pengguna</label>
-                    <input type="text" id="regUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Nama Pengguna</label>
+                    <input type="text" id="regUsername" placeholder="Contoh: Rahman&Neyla" class="w-full px-4 py-3 rounded-xl bg-blue-950/80 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Password</label>
-                    <input type="password" id="regPassword" placeholder="Buat password aman..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Password</label>
+                    <input type="password" id="regPassword" placeholder="Buat password aman..." class="w-full px-4 py-3 rounded-xl bg-blue-950/80 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                 </div>
-                <button onclick="handleRegister()" id="regBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Daftar Akun</button>
-                <button onclick="toggleAuthMode('login')" class="w-full py-2.5 rounded-xl bg-stone-800 text-stone-300 font-medium text-xs hover:bg-stone-700 transition">← Kembali ke Halaman Masuk</button>
+                <button onclick="handleRegister()" id="regBtn" class="w-full py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs shadow-md transition hover:bg-lime-300">Daftar Akun</button>
+                <button onclick="toggleAuthMode('login')" class="w-full py-2.5 rounded-xl bg-blue-950 text-blue-200 font-medium text-xs hover:bg-blue-800 transition">← Kembali ke Halaman Masuk</button>
             </div>
 
         </div>
@@ -149,65 +153,58 @@
 
     <!-- POP-UP MANDATORI PROFIL (USER BARU) -->
     <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-stone-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-800 max-h-[90vh] overflow-y-auto">
+        <div class="bg-blue-950 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-blue-800 max-h-[90vh] overflow-y-auto">
             <div class="text-center mb-4">
-                <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-400">Wajib Diisi</span>
-                <h3 class="text-lg font-bold mt-2 text-stone-100">Lengkapi Detail Profil Pengguna</h3>
-                <p class="text-xs text-stone-400 mt-1">Harap isi detail profil pernikahan Anda sebelum melanjutkan.</p>
+                <span class="px-3 py-1 text-[10px] font-bold rounded-full bg-lime-400/20 text-lime-400">Wajib Diisi</span>
+                <h3 class="text-xl font-bold mt-2 text-white">Lengkapi Detail Profil Pengguna</h3>
+                <p class="text-xs text-blue-200 mt-1">Harap pilih foto avatar dan isi detail profil pernikahan Anda.</p>
             </div>
             <form onsubmit="handleSaveProfile(event)" class="space-y-4 text-left">
-                <!-- PILIH AVATAR ICON GOOGLE -->
+                <!-- PILIH AVATAR FOTO (10 PILIHAN) -->
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-2 text-center">Pilih Ikon Avatar Profil</label>
-                    <input type="hidden" id="profFotoUrl" value="💍">
-                    <div class="flex justify-center gap-2 flex-wrap" id="avatarPickerModal">
-                        <button type="button" onclick="selectAvatar('💍', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-amber-500 text-xl flex items-center justify-center">💍</button>
-                        <button type="button" onclick="selectAvatar('👰', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👰</button>
-                        <button type="button" onclick="selectAvatar('🤵', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🤵</button>
-                        <button type="button" onclick="selectAvatar('💖', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">💖</button>
-                        <button type="button" onclick="selectAvatar('🏰', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🏰</button>
-                        <button type="button" onclick="selectAvatar('👑', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
-                        <button type="button" onclick="selectAvatar('🌸', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🌸</button>
-                        <button type="button" onclick="selectAvatar('🥂', 'modal')" class="avatar-opt-modal w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🥂</button>
+                    <label class="block text-xs font-medium text-blue-200 mb-2 text-center">Pilih Foto Avatar Profil</label>
+                    <input type="hidden" id="profFotoUrl" value="https://files.catbox.moe/bewbfd.jpg">
+                    <div class="grid grid-cols-5 gap-2" id="avatarPickerModal">
+                        <!-- Diisi via Javascript -->
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-stone-300 mb-1">Nama Suami</label>
-                        <input type="text" id="profSuami" required placeholder="M. Nur Rahman" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                        <label class="block text-xs font-medium text-blue-200 mb-1">Nama Suami</label>
+                        <input type="text" id="profSuami" required placeholder="M. Nur Rahman" class="w-full px-3 py-2 rounded-xl bg-blue-900 border border-blue-700 text-white text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-stone-300 mb-1">Nama Istri</label>
-                        <input type="text" id="profIstri" required placeholder="Neyla Chusniyah" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                        <label class="block text-xs font-medium text-blue-200 mb-1">Nama Istri</label>
+                        <input type="text" id="profIstri" required placeholder="Neyla Chusniyah" class="w-full px-3 py-2 rounded-xl bg-blue-900 border border-blue-700 text-white text-xs">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Alamat</label>
-                    <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Alamat</label>
+                    <input type="text" id="profAlamat" required placeholder="Contoh: Banyuwangi" class="w-full px-3 py-2 rounded-xl bg-blue-900 border border-blue-700 text-white text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan 📅</label>
-                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs cursor-pointer">
+                    <label class="block text-xs font-medium text-blue-200 mb-1">Tanggal Pernikahan 📅</label>
+                    <input type="date" id="profTanggal" required class="w-full px-3 py-2 rounded-xl bg-blue-900 border border-blue-700 text-white text-xs cursor-pointer">
                 </div>
-                <button type="submit" id="saveProfBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs shadow-lg transition mt-4">Simpan Profil Saya</button>
+                <button type="submit" id="saveProfBtn" class="w-full py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs shadow-lg transition mt-4 hover:bg-lime-300">Simpan Profil Saya</button>
             </form>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (USER BERANDA) -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboardSection" class="hidden min-h-screen">
         <!-- Navbar -->
-        <nav class="bg-stone-900/80 backdrop-blur-md border-b border-stone-800 sticky top-0 z-40 no-print">
+        <nav class="bg-blue-950/80 backdrop-blur-md border-b border-blue-800 sticky top-0 z-40 no-print">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div id="navUserFoto" class="w-9 h-9 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-lg">💍</div>
-                    <span class="font-bold text-sm text-stone-100" id="displayUsername">Rahman&Neyla</span>
+                    <img id="navUserFoto" src="https://files.catbox.moe/bewbfd.jpg" class="w-9 h-9 rounded-full object-cover border border-blue-500" alt="Avatar">
+                    <span class="font-bold text-sm text-white" id="displayUsername">Rahman&Neyla</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button onclick="switchTab('input')" id="tabInputBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Input Tamu</button>
                     <button onclick="switchTab('data')" id="tabDataBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Data Tamu</button>
                     <button onclick="switchTab('profil')" id="tabProfBtn" class="px-3 py-1.5 rounded-xl text-xs font-medium transition">Profil</button>
-                    <button onclick="logout()" class="p-1.5 text-stone-400 hover:text-red-400 text-xs font-medium ml-2" title="Keluar">Keluar</button>
+                    <button onclick="logout()" class="p-1.5 text-blue-300 hover:text-red-400 text-xs font-medium ml-2" title="Keluar">Keluar</button>
                 </div>
             </div>
         </nav>
@@ -216,29 +213,29 @@
             
             <!-- TAB 1: INPUT TAMU -->
             <div id="tabInputContent" class="space-y-6">
-                <div class="bg-stone-900/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-800 max-w-lg mx-auto">
-                    <h2 class="text-lg font-bold mb-1 text-stone-100">Form Input Data Tamu</h2>
-                    <p class="text-xs text-stone-400 mb-6">Masukkan data tamu undangan dan amplop/kado.</p>
+                <div class="bg-blue-900/60 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-blue-500/30 max-w-lg mx-auto">
+                    <h2 class="text-xl font-bold mb-1 text-white">Form Input Data Tamu</h2>
+                    <p class="text-xs text-blue-200 mb-6">Masukkan data tamu undangan dan amplop/kado.</p>
                     
                     <form id="guestForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
                         <input type="hidden" id="editRowId" value="">
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Nama Lengkap Tamu</label>
-                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Nama Lengkap Tamu</label>
+                            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Alamat / Asal Tamu</label>
-                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Alamat / Asal Tamu</label>
+                            <input type="text" id="guestAddress" required placeholder="Contoh: Banyuwangi" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Nominal (Rupiah)</label>
-                            <input type="number" id="guestAmount" required placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Nominal (Rupiah)</label>
+                            <input type="text" id="guestAmount" required oninput="formatRupiahInput(this)" placeholder="Contoh: 100.000" class="w-full px-4 py-3 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
                         </div>
-                        <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md">Simpan Data Tamu</button>
+                        <button type="submit" id="submitBtn" class="w-full py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs transition shadow-md hover:bg-lime-300">Simpan Data Tamu</button>
                     </form>
 
                     <!-- NOTIFIKASI BERHASIL DI BAWAH TOMBOL SIMPAN -->
-                    <div id="inlineNotification" class="mt-4 p-3 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 text-xs text-center hidden transition-all duration-300">
+                    <div id="inlineNotification" class="mt-4 p-3 rounded-xl bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs text-center hidden transition-all duration-300">
                         ✅ Data tamu berhasil disimpan!
                     </div>
                 </div>
@@ -253,15 +250,15 @@
                     <hr class="my-2">
                 </div>
 
-                <div class="bg-stone-900/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-stone-800">
+                <div class="bg-blue-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-blue-500/30">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                         <div>
-                            <h2 class="text-lg font-bold text-stone-100">Database Tamu & Hadiah</h2>
-                            <p class="text-xs text-stone-400">Total Terkumpul: <span id="totalNominal" class="font-bold text-stone-100">Rp 0</span></p>
+                            <h2 class="text-xl font-bold text-white">Database Tamu & Hadiah</h2>
+                            <p class="text-xs text-blue-200">Total Terkumpul: <span id="totalNominal" class="font-extrabold text-lime-400 text-sm">Rp 0</span></p>
                         </div>
                         <div class="flex items-center gap-3 w-full md:w-auto">
-                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full md:w-64 px-4 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 focus:outline-none focus:ring-2 text-xs">
-                            <button onclick="printGuestData()" id="printBtn" class="px-4 py-2 rounded-xl text-white font-medium text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
+                            <input type="text" id="searchInput" oninput="filterData()" placeholder="Cari nama atau alamat..." class="w-full md:w-64 px-4 py-2 rounded-xl bg-blue-950/85 border border-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400 text-xs">
+                            <button onclick="printGuestData()" id="printBtn" class="px-4 py-2 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap hover:bg-lime-300">
                                 🖨️ Cetak / PDF
                             </button>
                         </div>
@@ -270,7 +267,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="border-b border-stone-800 text-stone-400 font-medium">
+                                <tr class="border-b border-blue-800 text-blue-200 font-medium">
                                     <th class="py-3 px-3 text-center w-12">No.</th>
                                     <th class="py-3 px-4">Nama Tamu</th>
                                     <th class="py-3 px-4">Alamat</th>
@@ -279,7 +276,7 @@
                                     <th class="py-3 px-4 text-center no-print">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="guestTableBody" class="text-stone-300">
+                            <tbody id="guestTableBody" class="text-blue-100">
                                 <!-- Data injected via JS -->
                             </tbody>
                         </table>
@@ -289,47 +286,40 @@
 
             <!-- TAB 3: EDIT PROFIL -->
             <div id="tabProfContent" class="hidden space-y-6">
-                <div class="bg-stone-900/90 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-stone-800 max-w-lg mx-auto">
-                    <h2 class="text-lg font-bold mb-1 text-stone-100">Sunting Profil Pengguna</h2>
-                    <p class="text-xs text-stone-400 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
+                <div class="bg-blue-900/60 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-blue-500/30 max-w-lg mx-auto">
+                    <h2 class="text-xl font-bold mb-1 text-white">Sunting Profil Pengguna</h2>
+                    <p class="text-xs text-blue-200 mb-6">Ubah data profil pernikahan Anda kapan saja.</p>
                     
                     <form onsubmit="handleSaveProfile(event)" class="space-y-4">
-                        <!-- PILIH AVATAR ICON EDIT -->
+                        <!-- PILIH AVATAR FOTO EDIT -->
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-2 text-center">Pilih Ikon Avatar Profil</label>
-                            <input type="hidden" id="profFotoUrlEdit" value="💍">
-                            <div class="flex justify-center gap-2 flex-wrap" id="avatarPickerEdit">
-                                <button type="button" onclick="selectAvatar('💍', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-amber-500 text-xl flex items-center justify-center">💍</button>
-                                <button type="button" onclick="selectAvatar('👰', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👰</button>
-                                <button type="button" onclick="selectAvatar('🤵', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🤵</button>
-                                <button type="button" onclick="selectAvatar('💖', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">💖</button>
-                                <button type="button" onclick="selectAvatar('🏰', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🏰</button>
-                                <button type="button" onclick="selectAvatar('👑', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">👑</button>
-                                <button type="button" onclick="selectAvatar('🌸', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🌸</button>
-                                <button type="button" onclick="selectAvatar('🥂', 'edit')" class="avatar-opt-edit w-10 h-10 rounded-xl bg-stone-800 border-2 border-transparent text-xl flex items-center justify-center">🥂</button>
+                            <label class="block text-xs font-medium text-blue-200 mb-2 text-center">Pilih Foto Avatar Profil</label>
+                            <input type="hidden" id="profFotoUrlEdit" value="https://files.catbox.moe/bewbfd.jpg">
+                            <div class="grid grid-cols-5 gap-2" id="avatarPickerEdit">
+                                <!-- Diisi via Javascript -->
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-medium text-stone-300 mb-1">Nama Suami</label>
-                                <input type="text" id="profSuamiEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                                <label class="block text-xs font-medium text-blue-200 mb-1">Nama Suami</label>
+                                <input type="text" id="profSuamiEdit" required class="w-full px-3 py-2 rounded-xl bg-blue-950 border border-blue-700 text-white text-xs">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-stone-300 mb-1">Nama Istri</label>
-                                <input type="text" id="profIstriEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                                <label class="block text-xs font-medium text-blue-200 mb-1">Nama Istri</label>
+                                <input type="text" id="profIstriEdit" required class="w-full px-3 py-2 rounded-xl bg-blue-950 border border-blue-700 text-white text-xs">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Alamat</label>
-                            <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs">
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Alamat</label>
+                            <input type="text" id="profAlamatEdit" required class="w-full px-3 py-2 rounded-xl bg-blue-950 border border-blue-700 text-white text-xs">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-stone-300 mb-1">Tanggal Pernikahan 📅</label>
-                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs cursor-pointer">
+                            <label class="block text-xs font-medium text-blue-200 mb-1">Tanggal Pernikahan 📅</label>
+                            <input type="date" id="profTanggalEdit" required class="w-full px-3 py-2 rounded-xl bg-blue-950 border border-blue-700 text-white text-xs cursor-pointer">
                         </div>
                         <div class="flex gap-3 pt-2">
-                            <button type="button" onclick="switchTab('input')" class="w-1/3 py-3 rounded-xl bg-stone-800 text-stone-300 font-medium text-xs hover:bg-stone-700 transition">Kembali</button>
-                            <button type="submit" id="saveProfEditBtn" class="w-2/3 py-3 rounded-xl text-white font-medium text-xs shadow-md transition">Perbarui Profil</button>
+                            <button type="button" onclick="switchTab('input')" class="w-1/3 py-3 rounded-xl bg-blue-950 text-blue-200 font-medium text-xs hover:bg-blue-800 transition">Kembali</button>
+                            <button type="submit" id="saveProfEditBtn" class="w-2/3 py-3 rounded-xl bg-lime-400 text-blue-950 font-bold text-xs shadow-md transition hover:bg-lime-300">Perbarui Profil</button>
                         </div>
                     </form>
                 </div>
@@ -341,28 +331,71 @@
     <!-- LOGIKA JAVASCRIPT APP -->
     <script>
         let currentUser = localStorage.getItem("wedding_user") || "";
-        let currentTheme = localStorage.getItem("wedding_theme") || "sage";
+        let currentTheme = localStorage.getItem("wedding_theme") || "baseblue";
         let guestDataList = [];
-        let pendingDeleteId = null; // Menyimpan ID data yang akan dihapus
+        let pendingDeleteId = null;
 
-        // Konfigurasi Tema Warna Zennial untuk Dark Mode
+        // Daftar 10 URL Avatar Foto
+        const avatarUrls = [
+            "https://files.catbox.moe/bewbfd.jpg",
+            "https://files.catbox.moe/smjead.avif",
+            "https://files.catbox.moe/jr0pcn.jpg",
+            "https://files.catbox.moe/a9p7a3.jpg",
+            "https://files.catbox.moe/2d5klv.jpg",
+            "https://files.catbox.moe/ptgxmb.jpg",
+            "https://files.catbox.moe/h0jos1.jpg",
+            "https://files.catbox.moe/sn0lm7.jpg",
+            "https://files.catbox.moe/2w1bh2.jpg",
+            "https://files.catbox.moe/4b76gi.jpg"
+        ];
+
+        // Konfigurasi Tema Warna
         const themes = {
-            sage: { bg: "bg-emerald-950/20", primary: "bg-emerald-600", hover: "hover:bg-emerald-700", text: "text-emerald-400" },
-            terracotta: { bg: "bg-amber-950/20", primary: "bg-amber-600", hover: "hover:bg-amber-700", text: "text-amber-400" },
-            navy: { bg: "bg-blue-950/20", primary: "bg-blue-600", hover: "hover:bg-blue-700", text: "text-blue-400" },
-            dusty: { bg: "bg-rose-950/20", primary: "bg-rose-500", hover: "hover:bg-rose-600", text: "text-rose-400" },
-            lavender: { bg: "bg-purple-950/20", primary: "bg-purple-600", hover: "hover:bg-purple-700", text: "text-purple-400" },
-            mustard: { bg: "bg-yellow-950/20", primary: "bg-yellow-600", hover: "hover:bg-yellow-700", text: "text-yellow-400" },
-            teal: { bg: "bg-teal-950/20", primary: "bg-teal-600", hover: "hover:bg-teal-700", text: "text-teal-400" },
-            charcoal: { bg: "bg-stone-900/40", primary: "bg-stone-700", hover: "hover:bg-stone-600", text: "text-stone-300" }
+            baseblue: { bg: "bg-[#0052FF]", primary: "bg-lime-400 text-blue-950 hover:bg-lime-300", navBg: "bg-blue-950/80" },
+            sage: { bg: "bg-emerald-950", primary: "bg-emerald-600 text-white hover:bg-emerald-700", navBg: "bg-stone-900/80" },
+            terracotta: { bg: "bg-amber-950", primary: "bg-amber-600 text-white hover:bg-amber-700", navBg: "bg-stone-900/80" },
+            charcoal: { bg: "bg-stone-950", primary: "bg-stone-700 text-white hover:bg-stone-600", navBg: "bg-stone-900/80" }
         };
 
         window.onload = function() {
             setTheme(currentTheme);
+            renderAvatarPickers();
             if (currentUser) {
                 checkUserStatusAndLoad();
             }
         };
+
+        function renderAvatarPickers() {
+            const containers = [document.getElementById("avatarPickerModal"), document.getElementById("avatarPickerEdit")];
+            containers.forEach((container, idx) => {
+                if (!container) return;
+                container.innerHTML = "";
+                avatarUrls.forEach((url, i) => {
+                    const btn = document.createElement("button");
+                    const mode = idx === 0 ? 'modal' : 'edit';
+                    btn.type = "button";
+                    btn.onclick = () => selectAvatar(url, mode);
+                    btn.className = `avatar-opt-${mode} w-full h-12 rounded-xl bg-blue-900 border-2 overflow-hidden transition hover:scale-105 ${i === 0 ? 'border-lime-400 ring-2 ring-lime-400' : 'border-blue-700'}`;
+                    btn.innerHTML = `<img src="${url}" class="w-full h-full object-cover" alt="Avatar ${i+1}">`;
+                    container.appendChild(btn);
+                });
+            });
+        }
+
+        // Fungsi Format Rupiah Otomatis saat mengetik
+        function formatRupiahInput(input) {
+            let angka = input.value.replace(/[^,\d]/g, '').toString();
+            let split = angka.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            input.value = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        }
 
         function toggleThemePalette() {
             document.getElementById("themePalette").classList.toggle("hidden");
@@ -373,14 +406,14 @@
             localStorage.setItem("wedding_theme", tName);
             const t = themes[tName];
             
-            document.getElementById("mainBody").className = `min-h-screen text-stone-100 transition-colors duration-500 bg-stone-950 ${t.bg}`;
-            document.getElementById("loginBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
-            document.getElementById("regBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs shadow-md transition ${t.primary} ${t.hover}`;
-            document.getElementById("submitBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
-            document.getElementById("saveProfBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
-            document.getElementById("saveProfEditBtn").className = `w-full py-3 rounded-xl text-white font-medium text-xs transition shadow-md ${t.primary} ${t.hover}`;
-            document.getElementById("popupBtn").className = `w-full py-2.5 rounded-xl text-white text-xs font-semibold shadow transition ${t.primary} ${t.hover}`;
-            document.getElementById("printBtn").className = `px-4 py-2 rounded-xl text-white font-medium text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap ${t.primary} ${t.hover}`;
+            document.getElementById("mainBody").className = `min-h-screen text-white transition-colors duration-500 ${t.bg} bg-grid-pattern`;
+            document.getElementById("loginBtn").className = `w-full py-3 rounded-xl font-bold text-xs shadow-md transition ${t.primary}`;
+            document.getElementById("regBtn").className = `w-full py-3 rounded-xl font-bold text-xs shadow-md transition ${t.primary}`;
+            document.getElementById("submitBtn").className = `w-full py-3 rounded-xl font-bold text-xs transition shadow-md ${t.primary}`;
+            document.getElementById("saveProfBtn").className = `w-full py-3 rounded-xl font-bold text-xs transition shadow-md ${t.primary}`;
+            document.getElementById("saveProfEditBtn").className = `w-full py-3 rounded-xl font-bold text-xs transition shadow-md ${t.primary}`;
+            document.getElementById("popupBtn").className = `w-full py-2.5 rounded-xl text-xs font-bold shadow transition ${t.primary}`;
+            document.getElementById("printBtn").className = `px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-1.5 whitespace-nowrap ${t.primary}`;
             
             updateTabUI();
         }
@@ -400,15 +433,12 @@
             const notif = document.getElementById("inlineNotification");
             notif.textContent = message;
             if (isSuccess) {
-                notif.className = "mt-4 p-3 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 text-xs text-center transition-all duration-300";
+                notif.className = "mt-4 p-3 rounded-xl bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs text-center transition-all duration-300";
             } else {
-                notif.className = "mt-4 p-3 rounded-xl bg-rose-900/40 border border-rose-500/30 text-rose-300 text-xs text-center transition-all duration-300";
+                notif.className = "mt-4 p-3 rounded-xl bg-rose-900/60 border border-rose-500/40 text-rose-300 text-xs text-center transition-all duration-300";
             }
             notif.classList.remove("hidden");
-            
-            setTimeout(() => {
-                notif.classList.add("hidden");
-            }, 3000);
+            setTimeout(() => { notif.classList.add("hidden"); }, 3000);
         }
 
         function toggleAuthMode(mode) {
@@ -426,25 +456,27 @@
             return regex.test(username) && !username.includes(" ");
         }
 
-        function selectAvatar(icon, mode) {
+        function selectAvatar(url, mode) {
             if (mode === 'modal') {
-                document.getElementById("profFotoUrl").value = icon;
+                document.getElementById("profFotoUrl").value = url;
                 document.querySelectorAll(".avatar-opt-modal").forEach(btn => {
-                    btn.classList.remove("border-amber-500");
-                    btn.classList.add("border-transparent");
-                    if (btn.textContent.trim() === icon) {
-                        btn.classList.add("border-amber-500");
-                        btn.classList.remove("border-transparent");
+                    btn.classList.remove("border-lime-400", "ring-2", "ring-lime-400");
+                    btn.classList.add("border-blue-700");
+                    const img = btn.querySelector("img");
+                    if (img && img.src === url) {
+                        btn.classList.add("border-lime-400", "ring-2", "ring-lime-400");
+                        btn.classList.remove("border-blue-700");
                     }
                 });
             } else {
-                document.getElementById("profFotoUrlEdit").value = icon;
+                document.getElementById("profFotoUrlEdit").value = url;
                 document.querySelectorAll(".avatar-opt-edit").forEach(btn => {
-                    btn.classList.remove("border-amber-500");
-                    btn.classList.add("border-transparent");
-                    if (btn.textContent.trim() === icon) {
-                        btn.classList.add("border-amber-500");
-                        btn.classList.remove("border-transparent");
+                    btn.classList.remove("border-lime-400", "ring-2", "ring-lime-400");
+                    btn.classList.add("border-blue-700");
+                    const img = btn.querySelector("img");
+                    if (img && img.src === url) {
+                        btn.classList.add("border-lime-400", "ring-2", "ring-lime-400");
+                        btn.classList.remove("border-blue-700");
                     }
                 });
             }
@@ -470,7 +502,6 @@
                 if (json.status === "success") {
                     currentUser = json.username;
                     localStorage.setItem("wedding_user", currentUser);
-                    
                     if (!json.isProfileComplete) {
                         document.getElementById("profileModal").classList.remove("hidden");
                     } else {
@@ -550,10 +581,8 @@
 
                 if (json.status === "success") {
                     document.getElementById("profileModal").classList.add("hidden");
-                    
-                    document.getElementById("navUserFoto").textContent = fotoUrl;
+                    document.getElementById("navUserFoto").src = fotoUrl;
                     selectAvatar(fotoUrl, 'edit');
-
                     showPopup("Profil berhasil diperbarui!", "Berhasil", "✅");
                     showDashboard();
                 } else {
@@ -599,9 +628,8 @@
                 const json = await res.json();
                 if (json.status === "success") {
                     const p = json.profile;
-                    
-                    const activeIcon = p.fotoUrl || '💍';
-                    document.getElementById("navUserFoto").textContent = activeIcon;
+                    const activeIcon = p.fotoUrl || avatarUrls[0];
+                    document.getElementById("navUserFoto").src = activeIcon;
                     selectAvatar(activeIcon, 'edit');
 
                     document.getElementById("profSuamiEdit").value = p.namaSuami || "";
@@ -612,7 +640,6 @@
                         const formattedDate = new Date(p.tanggalNikah).toISOString().split('T')[0];
                         document.getElementById("profTanggalEdit").value = formattedDate;
                     }
-                    
                     document.getElementById("printSubTitle").textContent = `Pasangan: ${p.namaSuami || ''} & ${p.namaIstri || ''} (${currentUser})`;
                 }
             } catch (err) {
@@ -639,18 +666,18 @@
             const divProf = document.getElementById("tabProfContent");
 
             [divInput, divData, divProf].forEach(d => d.classList.add("hidden"));
-            [btnInput, btnData, btnProf].forEach(b => b.className = "px-3 py-1.5 rounded-xl text-xs font-medium transition text-stone-400 hover:bg-stone-800");
+            [btnInput, btnData, btnProf].forEach(b => b.className = "px-3 py-1.5 rounded-xl text-xs font-medium transition text-blue-200 hover:bg-blue-900");
 
             if (tab === 'input') {
                 divInput.classList.remove("hidden");
-                btnInput.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
+                btnInput.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition ${t.primary}`;
             } else if (tab === 'data') {
                 divData.classList.remove("hidden");
-                btnData.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
+                btnData.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition ${t.primary}`;
                 fetchGuestData();
             } else if (tab === 'profil') {
                 divProf.classList.remove("hidden");
-                btnProf.className = `px-3 py-1.5 rounded-xl text-xs font-medium transition text-white ${t.primary}`;
+                btnProf.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition ${t.primary}`;
                 loadUserProfileData();
             }
         }
@@ -683,7 +710,7 @@
             let total = 0;
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-stone-500">Belum ada data tamu terdaftar.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-blue-300">Belum ada data tamu terdaftar.</td></tr>`;
                 document.getElementById("totalNominal").textContent = "Rp 0";
                 return;
             }
@@ -691,15 +718,15 @@
             data.forEach((item, index) => {
                 total += Number(item.nominal || 0);
                 const tr = document.createElement("tr");
-                tr.className = "border-b border-stone-800/60 hover:bg-stone-800/30 transition";
+                tr.className = "border-b border-blue-800/60 hover:bg-blue-800/30 transition";
                 tr.innerHTML = `
-                    <td class="py-3 px-3 text-center text-stone-400 font-medium">${index + 1}</td>
-                    <td class="py-3 px-4 font-medium text-stone-200">${item.nama}</td>
-                    <td class="py-3 px-4 text-stone-400">${item.alamat}</td>
-                    <td class="py-3 px-4 font-semibold text-stone-200">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-                    <td class="py-3 px-4 text-xs text-stone-500 no-print">${item.waktu}</td>
+                    <td class="py-3 px-3 text-center text-blue-300 font-medium">${index + 1}</td>
+                    <td class="py-3 px-4 font-semibold text-white">${item.nama}</td>
+                    <td class="py-3 px-4 text-blue-200">${item.alamat}</td>
+                    <td class="py-3 px-4 font-bold text-lime-400">Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-4 text-xs text-blue-300 no-print">${item.waktu}</td>
                     <td class="py-3 px-4 text-center no-print flex justify-center gap-2">
-                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-medium">Sunting</button>
+                        <button onclick="editGuest('${item.id}', '${item.nama}', '${item.alamat}', '${item.nominal}')" class="text-xs px-2.5 py-1 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-medium">Sunting</button>
                         <button onclick="promptDeleteGuest('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-red-400 font-medium border border-red-900/50" title="Hapus">🗑️</button>
                     </td>
                 `;
@@ -717,7 +744,6 @@
             renderTable(filtered);
         }
 
-        // FUNGSI POP-UP KUSTOM UNTUK HAPUS DATA
         function promptDeleteGuest(id) {
             pendingDeleteId = id;
             document.getElementById("deleteConfirmModal").classList.remove("hidden");
@@ -728,7 +754,6 @@
             document.getElementById("deleteConfirmModal").classList.add("hidden");
         }
 
-        // Event listener untuk tombol konfirmasi hapus pada pop-up kustom
         document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
             if (!pendingDeleteId) return;
             const id = pendingDeleteId;
@@ -761,7 +786,8 @@
             const id = document.getElementById("editRowId").value;
             const nama = document.getElementById("guestName").value;
             const alamat = document.getElementById("guestAddress").value;
-            const nominal = document.getElementById("guestAmount").value;
+            // Menghilangkan titik ribuan sebelum dikirim ke backend
+            const rawNominal = document.getElementById("guestAmount").value.replace(/\./g, '');
 
             const btn = document.getElementById("submitBtn");
             btn.textContent = "Menyimpan...";
@@ -770,7 +796,7 @@
             const payload = {
                 action: action,
                 user: currentUser,
-                guest: { id: id, nama: nama, alamat: alamat, nominal: nominal }
+                guest: { id: id, nama: nama, alamat: alamat, nominal: rawNominal }
             };
 
             try {
@@ -798,7 +824,8 @@
             document.getElementById("editRowId").value = id;
             document.getElementById("guestName").value = nama;
             document.getElementById("guestAddress").value = alamat;
-            document.getElementById("guestAmount").value = nominal;
+            // Format nominal dengan titik saat dimasukkan ke input edit
+            document.getElementById("guestAmount").value = Number(nominal).toLocaleString('id-ID');
             document.getElementById("submitBtn").textContent = "Perbarui Data Tamu";
         }
 
